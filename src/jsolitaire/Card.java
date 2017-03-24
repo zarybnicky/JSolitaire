@@ -30,6 +30,26 @@ public class Card {
     public void setFaceUp(boolean faceUp) {
         this.faceUp = faceUp;
     }
+    
+     public boolean similarColorTo(Card c){
+        switch(suit){
+            case HEARTS:
+            case DIAMONDS:  if (c.suit.equals(Suit.HEARTS) || c.suit.equals(Suit.DIAMONDS)){
+                                return true;
+                            }else{
+                                return false;
+                            }
+                
+            case CLUBS:
+            case SPADES:    if (c.suit.equals(Suit.CLUBS) || c.suit.equals(Suit.SPADES)){
+                                return true;
+                             }else{
+                                return false;
+                            }
+        }
+        return false;
+    }
+
 
     public enum Suit {
         HEARTS,
