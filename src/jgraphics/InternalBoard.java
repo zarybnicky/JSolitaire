@@ -6,13 +6,11 @@
 package jgraphics;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
-import jsolitaire.IO;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
  *
@@ -20,40 +18,39 @@ import jsolitaire.IO;
  */
 public class InternalBoard extends javax.swing.JInternalFrame {
 
-    int number; 
-    int time = 0;
-    Timer timer;
-    Boolean active = false;
-    
+    private static final long serialVersionUID = 1L;
+
+    private final int number;
+    private int time = 0;
+    private final Timer timer;
+    private Boolean active = false;
+    private jsolitaire.Board board = new jsolitaire.Board();
+
     /**
      * Creates new form InternalBoard
+     * @param number
      */
     public InternalBoard(int number) {
         initComponents();
-        
+
         this.number = number;
-        
-        ((BasicInternalFrameUI) this.getUI()).setNorthPane(null); // Delete header panel
-        
+
+        ((BasicInternalFrameUI) super.getUI()).setNorthPane(null); // Delete header panel
+
         jButton1.setMnemonic(KeyEvent.VK_N);
         jButton2.setMnemonic(KeyEvent.VK_O);
         jButton3.setMnemonic(KeyEvent.VK_S);
         jButton4.setMnemonic(KeyEvent.VK_X);
         jButton5.setMnemonic(KeyEvent.VK_Z);
         jButton6.setMnemonic(KeyEvent.VK_Y);
-                
-        ActionListener a = new ActionListener(){
-            public void actionPerformed(ActionEvent a){
-                int min, sec;
-                time++;
-                min = time / 60;
-                sec = time % 60;
-                jLabel1.setText("Time: " + min + ":" + sec);
-            }
-        };
-        
-        timer = new Timer(1000, a);
-        
+
+        timer = new Timer(1000, (ActionEvent a1) -> {
+            int min, sec;
+            time++;
+            min = time / 60;
+            sec = time % 60;
+            jLabel1.setText("Time: " + min + ":" + sec);
+        });
     }
 
     /**
@@ -121,8 +118,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             }
         });
 
-        jPanel1.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,8 +128,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        jPanel2.setForeground(new java.awt.Color(0, 0, 0));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -161,8 +154,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             }
         });
 
-        jPanel3.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -174,7 +165,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel4.setForeground(new java.awt.Color(0, 0, 0));
         jPanel4.setPreferredSize(new java.awt.Dimension(60, 0));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -188,7 +178,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel5.setForeground(new java.awt.Color(0, 0, 0));
         jPanel5.setPreferredSize(new java.awt.Dimension(60, 0));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -202,8 +191,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel6.setForeground(new java.awt.Color(0, 0, 0));
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -215,7 +202,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel9.setForeground(new java.awt.Color(0, 0, 0));
         jPanel9.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel9.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel9.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -232,7 +218,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel12.setForeground(new java.awt.Color(0, 0, 0));
         jPanel12.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel12.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel12.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -249,7 +234,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel13.setForeground(new java.awt.Color(0, 0, 0));
         jPanel13.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel13.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel13.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -266,7 +250,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel14.setForeground(new java.awt.Color(0, 0, 0));
         jPanel14.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel14.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel14.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -283,7 +266,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel15.setForeground(new java.awt.Color(0, 0, 0));
         jPanel15.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel15.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel15.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -300,7 +282,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel16.setForeground(new java.awt.Color(0, 0, 0));
         jPanel16.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel16.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel16.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -317,7 +298,6 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 75, Short.MAX_VALUE)
         );
 
-        jPanel17.setForeground(new java.awt.Color(0, 0, 0));
         jPanel17.setMaximumSize(new java.awt.Dimension(60, 75));
         jPanel17.setMinimumSize(new java.awt.Dimension(60, 75));
         jPanel17.setPreferredSize(new java.awt.Dimension(60, 0));
@@ -435,37 +415,38 @@ public class InternalBoard extends javax.swing.JInternalFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // Help next card
-        if (active){}
+        if (active) {
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if (active){}
+        if (active) {
+        }
         // UNDO
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        timer.start(); 
+        timer.start();
         jLabel1.setText("Time: 0:0");
         active = true;
-        
+
         // Start
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            IO.load(file);
+        JFileChooser f = new JFileChooser();
+        if (f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            jsolitaire.Board.deserialize(f.getSelectedFile()).apply(
+                    x -> JOptionPane.showMessageDialog(null, x, "Chyba", JOptionPane.ERROR_MESSAGE),
+                    x -> board = x);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (active){}
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            IO.save(file);
+        JFileChooser f = new JFileChooser();
+        if (f.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            jsolitaire.Board.serialize(f.getSelectedFile(), board)
+                    .ifPresent(x -> JOptionPane.showMessageDialog(null, x, "Chyba", JOptionPane.ERROR_MESSAGE));
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
