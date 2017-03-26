@@ -1,36 +1,50 @@
 package jsolitaire;
 
-public class Move {
+import java.io.Serializable;
+import jsolitaire.Board.Deck;
 
-    private final Card card;
-    private final Board.Deck from;
-    private final Board.Deck to;
-    private int rank;
+public class Move implements Serializable {
 
-    public Move(Card card, Board.Deck from, Board.Deck to) {
-        this.card = card;
-        this.from = from;
-        this.to = to;
-        this.rank = -1;
+    private static final long serialVersionUID = 1L;
+
+    private final Deck fromDeck;
+    private final int fromSlot;
+    private final Deck toDeck;
+    private final int toSlot;
+    private final int fromIndex;
+
+    public Move(Deck fromDeck, int fromSlot, int fromIndex, Deck toDeck, int toSlot) {
+        if (fromDeck != Deck.TABLEAU && fromIndex > 0) {
+            throw new RuntimeException("Can't move a stack from someplace other than tableau (we're indexing from the first accessible card!).");
+        }
+        this.fromDeck = fromDeck;
+        this.fromSlot = fromSlot;
+        this.fromIndex = fromIndex;
+        this.toDeck = toDeck;
+        this.toSlot = toSlot;
     }
 
-    public Card getCard() {
-        return card;
+    public Deck getFromDeck() {
+        return fromDeck;
     }
 
-    public Board.Deck getFrom() {
-        return from;
+    public int getFromSlot() {
+        return fromSlot;
     }
 
-    public Board.Deck getTo() {
-        return to;
+    public int getFromIndex() {
+        return fromIndex;
+    }
+
+    public Deck getToDeck() {
+        return toDeck;
+    }
+
+    public int getToSlot() {
+        return toSlot;
     }
     
-    public int getRank() {
-        return rank;
-    }
-    
-    public void setRank(int rank) {
-        this.rank = rank;
+    public Move getInverse() {
+        return new Move(toDeck, toSlot, fromIndex, fromDeck, fromSlot);
     }
 }

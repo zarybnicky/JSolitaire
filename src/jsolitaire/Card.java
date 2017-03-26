@@ -3,6 +3,8 @@
  */
 package jsolitaire;
 
+import java.util.Objects;
+
 public class Card {
 
     private final Suit suit;
@@ -30,32 +32,20 @@ public class Card {
     public void setFaceUp(boolean faceUp) {
         this.faceUp = faceUp;
     }
-    
-     public boolean similarColorTo(Card c){
-        switch(suit){
-            case HEARTS:
-            case DIAMONDS:  if (c.suit.equals(Suit.HEARTS) || c.suit.equals(Suit.DIAMONDS)){
-                                return true;
-                            }else{
-                                return false;
-                            }
-                
-            case CLUBS:
-            case SPADES:    if (c.suit.equals(Suit.CLUBS) || c.suit.equals(Suit.SPADES)){
-                                return true;
-                             }else{
-                                return false;
-                            }
-        }
-        return false;
+    public boolean isAlternateColor(Card c) {
+        boolean red = c.getSuit() == Suit.HEARTS || c.getSuit() == Suit.DIAMONDS;
+        return (suit == Suit.HEARTS || suit == Suit.DIAMONDS) ? red : !red;
     }
-
+    
+    public boolean precedes(Card c) {
+        return rank.ordinal() + 1 == c.getRank().ordinal();
+    }
 
     public enum Suit {
         HEARTS,
         DIAMONDS,
         SPADES,
-        CLUBS
+        CLUBS;
     }
 
     public enum Rank {
@@ -72,5 +62,18 @@ public class Card {
         JACK,
         QUEEN,
         KING
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Card && suit == ((Card) obj).getSuit() && rank == ((Card) obj).getRank();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 7 + 41 * hash + Objects.hashCode(suit);
+        hash = 41 * hash + Objects.hashCode(rank);
+        return hash;
     }
 }
