@@ -16,7 +16,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  *
  * @author User
  */
-public class InternalBoard extends javax.swing.JInternalFrame {
+public class GamePanel extends javax.swing.JInternalFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,25 +24,28 @@ public class InternalBoard extends javax.swing.JInternalFrame {
     private int time = 0;
     private final Timer timer;
     private Boolean active = false;
+    private final GameWindow parent;
     private jsolitaire.Board board = new jsolitaire.Board();
 
     /**
      * Creates new form InternalBoard
      * @param number
+     * @param parent
      */
-    public InternalBoard(int number) {
+    public GamePanel(int number, GameWindow parent) {
         initComponents();
 
         this.number = number;
+        this.parent = parent;
 
-        ((BasicInternalFrameUI) super.getUI()).setNorthPane(null); // Delete header panel
+        ((BasicInternalFrameUI) super.getUI()).setNorthPane(null);
 
-        jButton1.setMnemonic(KeyEvent.VK_N);
-        jButton2.setMnemonic(KeyEvent.VK_O);
-        jButton3.setMnemonic(KeyEvent.VK_S);
-        jButton4.setMnemonic(KeyEvent.VK_X);
-        jButton5.setMnemonic(KeyEvent.VK_Z);
-        jButton6.setMnemonic(KeyEvent.VK_Y);
+        newButton.setMnemonic(KeyEvent.VK_N);
+        openButton.setMnemonic(KeyEvent.VK_O);
+        saveButton.setMnemonic(KeyEvent.VK_S);
+        closeButton.setMnemonic(KeyEvent.VK_X);
+        hintButton.setMnemonic(KeyEvent.VK_Z);
+        undoButton.setMnemonic(KeyEvent.VK_Y);
 
         timer = new Timer(1000, (ActionEvent a1) -> {
             int min, sec;
@@ -62,14 +65,14 @@ public class InternalBoard extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        newButton = new javax.swing.JButton();
+        openButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        closeButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        hintButton = new javax.swing.JButton();
+        undoButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -90,31 +93,31 @@ public class InternalBoard extends javax.swing.JInternalFrame {
         setMaximumSize(new java.awt.Dimension(600, 350));
         setMinimumSize(new java.awt.Dimension(600, 350));
 
-        jButton1.setText("New");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        newButton.setText("New");
+        newButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                newButtonActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Open");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        openButton.setText("Open");
+        openButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                openButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Save");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
-        jButton4.setText("Close");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        closeButton.setText("Close");
+        closeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                closeButtonActionPerformed(evt);
             }
         });
 
@@ -140,17 +143,17 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButton5.setText("Next");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        hintButton.setText("Hint");
+        hintButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                hintButtonActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Undo");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        undoButton.setText("Undo");
+        undoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                undoButtonActionPerformed(evt);
             }
         });
 
@@ -322,19 +325,19 @@ public class InternalBoard extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addComponent(jButton1)
+                .addComponent(newButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(openButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(saveButton)
                 .addGap(18, 18, 18)
-                .addComponent(jButton5)
+                .addComponent(hintButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6)
+                .addComponent(undoButton)
                 .addGap(56, 56, 56)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addComponent(closeButton)
                 .addGap(23, 23, 23))
             .addComponent(jSeparator1)
             .addGroup(layout.createSequentialGroup()
@@ -375,12 +378,12 @@ public class InternalBoard extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton1)
-                        .addComponent(jButton2)
-                        .addComponent(jButton3)
-                        .addComponent(jButton4)
-                        .addComponent(jButton5)
-                        .addComponent(jButton6)))
+                        .addComponent(newButton)
+                        .addComponent(openButton)
+                        .addComponent(saveButton)
+                        .addComponent(closeButton)
+                        .addComponent(hintButton)
+                        .addComponent(undoButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -408,56 +411,52 @@ public class InternalBoard extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Board.rem(number);
-        this.dispose();// Exit
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
+        this.parent.remove(number);
+        this.dispose();
+    }//GEN-LAST:event_closeButtonActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void hintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hintButtonActionPerformed
         // Help next card
         if (active) {
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_hintButtonActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
         if (active) {
         }
         // UNDO
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_undoButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
         timer.start();
         jLabel1.setText("Time: 0:0");
         active = true;
 
         // Start
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_newButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
         JFileChooser f = new JFileChooser();
         if (f.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             jsolitaire.Board.deserialize(f.getSelectedFile()).apply(
                     x -> JOptionPane.showMessageDialog(null, x, "Chyba", JOptionPane.ERROR_MESSAGE),
                     x -> board = x);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_openButtonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         JFileChooser f = new JFileChooser();
         if (f.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
             jsolitaire.Board.serialize(f.getSelectedFile(), board)
                     .ifPresent(x -> JOptionPane.showMessageDialog(null, x, "Chyba", JOptionPane.ERROR_MESSAGE));
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton closeButton;
+    private javax.swing.JButton hintButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
@@ -474,5 +473,9 @@ public class InternalBoard extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JButton newButton;
+    private javax.swing.JButton openButton;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JButton undoButton;
     // End of variables declaration//GEN-END:variables
 }
