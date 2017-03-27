@@ -16,7 +16,6 @@ public class GameWindow extends javax.swing.JFrame {
 
     private static int count = 0;
     private static final long serialVersionUID = 1L;
-    private boolean first = true;
     private final javax.swing.JInternalFrame[] frames = {null, null, null, null};
 
     /**
@@ -49,7 +48,6 @@ public class GameWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Solitaire");
-        setAlwaysOnTop(true);
         setBackground(new java.awt.Color(0, 0, 0));
         setForeground(java.awt.Color.black);
         setName("frame"); // NOI18N
@@ -108,7 +106,7 @@ public class GameWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGameActionPerformed
-        if (!first) {
+        if (count != 0) {
             this.setSize(1275, 790);
         }
         for (int i = 0; i < 4; i++) {
@@ -118,10 +116,14 @@ public class GameWindow extends javax.swing.JFrame {
                                        (i / 2 > 0) ? 400 : 40);
                 frames[i].setVisible(true);
 
+                
                 this.add(frames[i]);
+                
+                frames[i].invalidate(); // Needed for drawing
+                frames[i].validate();
                 frames[i].repaint();
                 
-                first = false;
+                count++;
                 break;
             }
         }
@@ -138,7 +140,7 @@ public class GameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_helpActionPerformed
 
     public void rem(int i) {
-        this.remove(frames[i]);
+        //this.remove(frames[i]);
         frames[i] = null;
         count--;
     }
