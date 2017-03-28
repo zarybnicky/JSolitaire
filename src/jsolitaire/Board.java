@@ -13,25 +13,24 @@ import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
-import java.util.Queue;
-import java.util.Stack;
-import javax.swing.JComponent;
+import javax.swing.ListModel;
 
 public class Board implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private transient JComponent temp; //leaving this here just for the "transient"
+    private final transient List<Runnable> subscribers = new ArrayList<>();
 
-    private final Stack<Move> history = new Stack<>();
-    private final Deque<Card> stock = new ArrayDeque<>();
-    private final Deque<Card> waste = new ArrayDeque<>();
-    private final List<Deque<Card>> foundation = Arrays.asList(new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>());
-    private final List<Deque<Card>> tableau = Arrays.asList(new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>(), new ArrayDeque<>());
+    private final StackModel<Move> history = new StackModel<>();
+    private final StackModel<Card> stock = new StackModel<>();
+    private final StackModel<Card> waste = new StackModel<>();
+    private final List<StackModel<Card>> foundation = Arrays.asList(new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>());
+    private final List<StackModel<Card>> tableau = Arrays.asList(new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>());
 
     public enum Deck {
         STOCK,
@@ -40,10 +39,10 @@ public class Board implements Serializable {
         TABLEAU
     }
 
-    public static Optional<String> serialize(File f, Board b) {
+    public Optional<String> serialize(File f) {
         try (FileOutputStream fileOut = new FileOutputStream(f);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
-            out.writeObject(b);
+            out.writeObject(this);
         } catch (IOException i) {
             return Optional.of(i.toString());
         }
@@ -52,15 +51,20 @@ public class Board implements Serializable {
 
     public static Either<String, Board> deserialize(File f) {
         try (FileInputStream fileIn = new FileInputStream(f);
-             ObjectInputStream in = new ObjectInputStream(fileIn)
-        ) {
+                ObjectInputStream in = new ObjectInputStream(fileIn)) {
             return Either.right((Board) in.readObject());
         } catch (IOException | ClassNotFoundException i) {
             return Either.left(i.toString());
         }
     }
 
-    public Board() {
+    public void resetGame() {
+        history.clear();
+        stock.clear();
+        waste.clear();
+        foundation.forEach(Collection::clear);
+        tableau.forEach(Collection::clear);
+
         List<Card> deck = getShuffledDeck();
         for (int i = 0, j = 0, k = 1; i < 52; i++) {
             if (k < 8) {
@@ -76,7 +80,7 @@ public class Board implements Serializable {
     }
 
     public boolean isGameWon() {
-        return stock.isEmpty() && waste.isEmpty() && tableau.stream().allMatch(Queue::isEmpty);
+        return stock.isEmpty() && waste.isEmpty() && tableau.stream().allMatch(StackModel::isEmpty);
     }
 
     public boolean tryToMove(Move move) {
@@ -94,7 +98,11 @@ public class Board implements Serializable {
         }
     }
 
-    public boolean isValidMove(Move x) {
+    public ListModel<Card> getListModel(Deck deck, int slot) {
+        return getDeckInternal(deck, slot);
+    }
+
+    private boolean isValidMove(Move x) {
         Card from = peekCard(x.getFromDeck(), x.getFromSlot(), x.getFromIndex());
         Card to = peekCard(x.getToDeck(), x.getToSlot(), 0);
 
@@ -131,23 +139,23 @@ public class Board implements Serializable {
     }
 
     private void performMove(Move move) {
-        Deque<Card> fromDeck = getDeck(move.getFromDeck(), move.getFromIndex());
-        Deque<Card> toDeck = getDeck(move.getToDeck(), move.getToSlot());
+        StackModel<Card> fromDeck = getDeckInternal(move.getFromDeck(), move.getFromIndex());
+        StackModel<Card> toDeck = getDeckInternal(move.getToDeck(), move.getToSlot());
 
         Deque<Card> xs = new ArrayDeque<>();
         for (int i = 0; i <= move.getFromIndex(); i++) {
-            xs.addFirst(fromDeck.removeFirst());
+            xs.addFirst(fromDeck.pop());
         }
         for (int i = 0; i <= move.getFromIndex(); i++) {
-            toDeck.addFirst(xs.removeLast());
+            toDeck.push(xs.removeLast());
         }
     }
 
     private Card peekCard(Deck deck, int slot, int num) {
-        return getDeck(deck, slot).stream().skip(num).findFirst().orElse(null);
+        return getDeckInternal(deck, slot).stream().skip(num).findFirst().orElse(null);
     }
 
-    private Deque<Card> getDeck(Deck deck, int slot) {
+    private StackModel<Card> getDeckInternal(Deck deck, int slot) {
         switch (deck) {
             case STOCK:
                 return stock;

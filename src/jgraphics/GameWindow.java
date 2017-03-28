@@ -7,6 +7,7 @@ package jgraphics;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  *
@@ -112,17 +113,12 @@ public class GameWindow extends javax.swing.JFrame {
         for (int i = 0; i < 4; i++) {
             if (frames[i] == null) {
                 frames[i] = new GamePanel(i, this);
-                frames[i].setLocation((i % 2 == 0) ? 5 : 635,
-                                       (i / 2 > 0) ? 400 : 40);
+                frames[i].setLocation((i % 2 == 0) ? 5 : 635, (i / 2 > 0) ? 400 : 40);
                 frames[i].setVisible(true);
 
-                
                 this.add(frames[i]);
-                
-                frames[i].invalidate(); // Needed for drawing
-                frames[i].validate();
-                frames[i].repaint();
-                
+                frames[i].revalidate();
+
                 count++;
                 break;
             }
@@ -134,13 +130,10 @@ public class GameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_closeGameActionPerformed
 
     private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpActionPerformed
-        // HELP
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "Dopln HELP!");
+        showMessageDialog(this, "Dopln HELP!");
     }//GEN-LAST:event_helpActionPerformed
 
     public void rem(int i) {
-        //this.remove(frames[i]);
         frames[i] = null;
         count--;
     }

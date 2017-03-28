@@ -3,7 +3,6 @@
  */
 package jsolitaire;
 
-import static java.lang.String.valueOf;
 import java.util.Objects;
 import javax.swing.ImageIcon;
 
@@ -12,13 +11,13 @@ public class Card {
     private final Suit suit;
     private final Rank rank;
     private boolean faceUp;
-    private ImageIcon icon = null;
+    private final ImageIcon icon;
 
     public Card(Suit suit, Rank rank, boolean faceUp) {
         this.suit = suit;
         this.rank = rank;
         this.faceUp = faceUp;
-        this.icon = new ImageIcon("../lib/" + cardName() + ".gif", cardName());
+        icon = new ImageIcon(Card.class.getResource("/resources/" + getIconName() + ".gif"), getIconName());
     }
 
     public Suit getSuit() {
@@ -29,7 +28,7 @@ public class Card {
         return rank;
     }
     
-    public ImageIcon getIcon(){
+    public ImageIcon getIcon() {
         return icon;
     }
 
@@ -40,26 +39,31 @@ public class Card {
     public void setFaceUp(boolean faceUp) {
         this.faceUp = faceUp;
     }
+
     public boolean isAlternateColor(Card c) {
         boolean red = c.getSuit() == Suit.HEARTS || c.getSuit() == Suit.DIAMONDS;
         return (suit == Suit.HEARTS || suit == Suit.DIAMONDS) ? red : !red;
     }
-    
+
     public boolean precedes(Card c) {
         return rank.ordinal() + 1 == c.getRank().ordinal();
     }
-    
-    public String cardName(){
-        String str = valueOf(rank);
-        switch(suit){
-            case HEARTS: return str+"H";
-            case DIAMONDS: return str+"D";
-            case SPADES: return str+"S";
-            case CLUBS: return str+"C";
+
+    public String getIconName() {
+        String str = String.valueOf(rank);
+        switch (suit) {
+            case HEARTS:
+                return str + "H";
+            case DIAMONDS:
+                return str + "D";
+            case SPADES:
+                return str + "S";
+            case CLUBS:
+                return str + "C";
         }
         return null;
     }
-    
+
     public enum Suit {
         HEARTS,
         DIAMONDS,

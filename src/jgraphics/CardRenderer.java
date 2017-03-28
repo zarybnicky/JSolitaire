@@ -6,30 +6,32 @@ package jgraphics;
 import java.awt.Component;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import jsolitaire.Card;
 
-public class CardRenderer extends DefaultListCellRenderer {
+public class CardRenderer extends JLabel implements ListCellRenderer<Card> {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        setBackground(list.getSelectionBackground());
+    public Component getListCellRendererComponent(JList<? extends Card> list, Card card, int index,
+            boolean isSelected, boolean cellHasFocus) {
 
-        Card card;
-        card = (Card) value;
         setIcon(card.getIcon());
         if (getIcon() != null) {
             if (index != list.getModel().getSize() - 1) {
                 setIcon(new ImageIcon(createImage(new FilteredImageSource(((ImageIcon) getIcon()).getImage().getSource(),
                         new CropImageFilter(0, 0, getIcon().getIconWidth(), 20)))));
             }
-            setFont(list.getFont());
         } else {
-            ImageIcon icon = new ImageIcon("../lib/missing.gif");
-            setIcon(icon);
+            setIcon(new ImageIcon("../lib/missing.gif"));
         }
+
+        setText("card");
+
         return this;
     }
 }
