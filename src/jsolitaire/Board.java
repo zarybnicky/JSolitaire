@@ -108,8 +108,9 @@ public class Board implements Serializable {
 
         switch (x.getToDeck()) {
             case STOCK:
-            case WASTE:
                 return false;
+            case WASTE:
+                return x.getFromDeck() == Deck.STOCK && x.getFromIndex() == 0;
             case FOUNDATION:
                 if (x.getFromIndex() > 0) { //can't move a stack to foundation
                     return false;
