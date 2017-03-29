@@ -25,7 +25,7 @@ public class CardRenderer extends JLabel implements ListCellRenderer<Card> {
             if (index != list.getModel().getSize() - 1) {
                 setIcon(new ImageIcon(createImage(new FilteredImageSource(
                         ((ImageIcon) getIcon()).getImage().getSource(),
-                        new CropImageFilter(0, 0, getIcon().getIconWidth(), 20)))));
+                        new CropImageFilter(0, 0, getIcon().getIconWidth(), 17)))));
             }
         } else {
             setIcon(new ImageIcon("../lib/missing.gif"));

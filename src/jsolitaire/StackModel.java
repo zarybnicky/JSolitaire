@@ -10,7 +10,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-class StackModel<T> extends Stack<T> implements ListModel<T> {
+public class StackModel<T> extends Stack<T> implements ListModel<T> {
 
     private static final long serialVersionUID = 1L;
 
