@@ -103,14 +103,25 @@ public class Board implements Serializable {
     }
 
     private boolean isValidMove(Move x) {
+        
         Card from = peekCard(x.getFromDeck(), x.getFromSlot(), x.getFromIndex());
-        Card to = peekCard(x.getToDeck(), x.getToSlot(), 0);
+        Card to = null;
+        
+        if (x.getToDeck() != Deck.WASTE){    
+            to = peekCard(x.getToDeck(), x.getToSlot(), getDeckInternal(x.getToDeck(),x.getToSlot()).getSize()-1);
+        }
 
         switch (x.getToDeck()) {
             case STOCK:
                 return false;
             case WASTE:
-                return x.getFromDeck() == Deck.STOCK && x.getFromIndex() == 0;
+                System.out.println(getDeckInternal(x.getFromDeck(),0));
+                if (getDeckInternal(x.getFromDeck(),0).isEmpty()){
+                    System.out.println("ahoj");
+                    x = x.getInverse();
+                    return true;
+                }
+                return x.getFromDeck() == Deck.STOCK;
             case FOUNDATION:
                 if (x.getFromIndex() > 0) { //can't move a stack to foundation
                     return false;
@@ -140,15 +151,15 @@ public class Board implements Serializable {
     }
 
     private void performMove(Move move) {
-        StackModel<Card> fromDeck = getDeckInternal(move.getFromDeck(), move.getFromIndex());
+        StackModel<Card> fromDeck = getDeckInternal(move.getFromDeck(), move.getFromSlot());
         StackModel<Card> toDeck = getDeckInternal(move.getToDeck(), move.getToSlot());
 
         Deque<Card> xs = new ArrayDeque<>();
-        for (int i = 0; i <= move.getFromIndex(); i++) {
+        for (int i = move.getFromIndex(); i <= fromDeck.getSize(); i++) {
             xs.addFirst(fromDeck.pop());
         }
         for (int i = 0; i <= move.getFromIndex(); i++) {
-            toDeck.push(xs.removeLast());
+            toDeck.push(xs.pop());
         }
     }
 

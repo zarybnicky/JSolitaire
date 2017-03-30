@@ -42,7 +42,7 @@ public class Card {
 
     public boolean isAlternateColor(Card c) {
         boolean red = c.getSuit() == Suit.HEARTS || c.getSuit() == Suit.DIAMONDS;
-        return (suit == Suit.HEARTS || suit == Suit.DIAMONDS) ? red : !red;
+        return (suit == Suit.HEARTS || suit == Suit.DIAMONDS) ? !red : red;
     }
 
     public boolean precedes(Card c) {

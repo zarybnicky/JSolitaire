@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.activation.DataHandler;
+import static jsolitaire.Board.Deck.TABLEAU;
 import jsolitaire.StackModel;
 
 /**
@@ -556,7 +557,8 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void stockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stockMouseClicked
-        System.out.print(board.tryToMove(new Move(Deck.STOCK, 0, 0, Deck.WASTE, 0)));
+        StackModel<Card> Stock = (StackModel<Card>) board.getListModel(Deck.STOCK,0);
+        System.out.print(board.tryToMove(new Move(Deck.STOCK, 0, Stock.getSize()-1, Deck.WASTE, 0)));
         //when drag-and-dropping, if tryToMove == false, float the card back to its original position
     }//GEN-LAST:event_stockMouseClicked
 
@@ -600,8 +602,6 @@ class ListItemTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     private JList<?> source;
     private int[] indices;
-    private int addIndex = -1; //Location where items were added
-    private int addCount; //Number of items added.
     private final Board board;
 
     protected ListItemTransferHandler(Board board) {
@@ -634,28 +634,15 @@ class ListItemTransferHandler extends TransferHandler {
         JList target = (JList) info.getComponent();
 
         int targetIndex = Integer.parseInt(target.getName());
-        System.out.println(targetIndex);
+        int sourceIndex = Integer.parseInt(source.getName());
 
-        if (board.getListModel(null,targetIndex).getElementAt(targetIndex).equals(indices[0] - 1)){ // Nezapomen upravit, aby to naslo.
-            // Presun jedne - Najdi/Vyrob vykonavajici funkci.
+        StackModel<Card> stackS = (StackModel<Card>) board.getListModel(TABLEAU,sourceIndex);
+        StackModel<Card> stackT = (StackModel<Card>) board.getListModel(TABLEAU,targetIndex);
+
+        if (source.getModel().getSize() == indices[0] + 1){
+            return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, stackS.getSize() - 1, Deck.TABLEAU, targetIndex));
         }else{
-            // Presun od vybrane - Najdi/Vyrob vykonavajici funkci.
-           
+            return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, indices[0], Deck.TABLEAU, targetIndex));
         } // Dodelat prenos do Foundation? Nebo DoubleClick?
-
-       /* Stare testy - asi vymazat
-        int max = listModel.getSize();
-        if (index < 0 || index > max) {
-            index = max;
-        }
-            
-        addIndex = index;*/
-
-       /* try {
-            System.out.println(index);
-        } catch (UnsupportedFlavorException | IOException ex) {
-            ex.printStackTrace();
-        }*/
-        return false;
     }
 }
