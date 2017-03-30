@@ -70,6 +70,7 @@ public class Board implements Serializable {
             if (k < 8) {
                 tableau.get(k - 1).add(deck.get(i));
                 if (++j == k) {
+                    tableau.get(k - 1).getElementAt(j-1).setFaceUp(true);
                     j = 0;
                     k++;
                 }
@@ -115,9 +116,7 @@ public class Board implements Serializable {
             case STOCK:
                 return false;
             case WASTE:
-                System.out.println(getDeckInternal(x.getFromDeck(),0));
-                if (getDeckInternal(x.getFromDeck(),0).isEmpty()){
-                    System.out.println("ahoj");
+                if (getDeckInternal(x.getFromDeck(),0).isEmpty()){ // Take nefunguje ani pro size ci empty.
                     x = x.getInverse();
                     return true;
                 }
@@ -126,13 +125,13 @@ public class Board implements Serializable {
                 if (x.getFromIndex() > 0) { //can't move a stack to foundation
                     return false;
                 }
-                if (to == null) {
+                if (to == null) { // Take nefunguje ani pro size ci empty.
                     return foundation.stream().allMatch(f -> f.peek() == null || f.peek().getSuit() != from.getSuit())
                             && from.getRank() == Card.Rank.ACE;
                 }
                 return from.getSuit() == to.getSuit() && from.precedes(to);
             default:
-                if (to == null) {
+                if (to == null) { // Tato detekce nefunguje a detekce pomoci size() ci empty() take ne!!!
                     return from.getRank() == Card.Rank.KING;
                 }
                 return from.isAlternateColor(to) && from.precedes(to);
@@ -158,7 +157,7 @@ public class Board implements Serializable {
         for (int i = move.getFromIndex(); i <= fromDeck.getSize(); i++) {
             xs.addFirst(fromDeck.pop());
         }
-        for (int i = 0; i <= move.getFromIndex(); i++) {
+        for (int i = 0; i < xs.size(); i++) {
             toDeck.push(xs.pop());
         }
     }

@@ -32,6 +32,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.activation.DataHandler;
+import javax.swing.ImageIcon;
 import static jsolitaire.Board.Deck.TABLEAU;
 import jsolitaire.StackModel;
 
@@ -100,10 +101,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
         hintButton = new javax.swing.JButton();
         undoButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        founcation1 = new javax.swing.JPanel();
-        foundation3 = new javax.swing.JPanel();
-        foundation4 = new javax.swing.JPanel();
-        foundation2 = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -120,6 +117,14 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau3 = new javax.swing.JList<>();
         jScrollPane7 = new javax.swing.JScrollPane();
         tableau4 = new javax.swing.JList<>();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        foundation1 = new javax.swing.JList<>();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        foundation2 = new javax.swing.JList<>();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        foundation3 = new javax.swing.JList<>();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        foundation4 = new javax.swing.JList<>();
 
         setBackground(new java.awt.Color(51, 204, 0));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -174,29 +179,35 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 .addContainerGap(33, Short.MAX_VALUE))
         );
 
+        stock.setBackground(new java.awt.Color(51, 204, 0));
+        stock.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        stock.setAlignmentX(0.0F);
+        stock.setMaximumSize(new java.awt.Dimension(76, 101));
+        stock.setMinimumSize(new java.awt.Dimension(76, 101));
+        stock.setPreferredSize(new java.awt.Dimension(76, 101));
         stock.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 stockMouseClicked(evt);
             }
         });
 
-        stockLabel.setText("jLabel3");
+        stockLabel.setMaximumSize(new java.awt.Dimension(76, 97));
+        stockLabel.setMinimumSize(new java.awt.Dimension(73, 97));
+        stockLabel.setPreferredSize(new java.awt.Dimension(73, 97));
 
         javax.swing.GroupLayout stockLayout = new javax.swing.GroupLayout(stock);
         stock.setLayout(stockLayout);
         stockLayout.setHorizontalGroup(
             stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(stockLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(stockLabel)
-                .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, stockLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         stockLayout.setVerticalGroup(
             stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(stockLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(stockLabel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, stockLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         hintButton.setText("Hint");
@@ -213,54 +224,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
             }
         });
 
-        javax.swing.GroupLayout founcation1Layout = new javax.swing.GroupLayout(founcation1);
-        founcation1.setLayout(founcation1Layout);
-        founcation1Layout.setHorizontalGroup(
-            founcation1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        founcation1Layout.setVerticalGroup(
-            founcation1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        foundation3.setPreferredSize(new java.awt.Dimension(60, 0));
-
-        javax.swing.GroupLayout foundation3Layout = new javax.swing.GroupLayout(foundation3);
-        foundation3.setLayout(foundation3Layout);
-        foundation3Layout.setHorizontalGroup(
-            foundation3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        foundation3Layout.setVerticalGroup(
-            foundation3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 76, Short.MAX_VALUE)
-        );
-
-        foundation4.setPreferredSize(new java.awt.Dimension(60, 0));
-
-        javax.swing.GroupLayout foundation4Layout = new javax.swing.GroupLayout(foundation4);
-        foundation4.setLayout(foundation4Layout);
-        foundation4Layout.setHorizontalGroup(
-            foundation4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        foundation4Layout.setVerticalGroup(
-            foundation4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout foundation2Layout = new javax.swing.GroupLayout(foundation2);
-        foundation2.setLayout(foundation2Layout);
-        foundation2Layout.setHorizontalGroup(
-            foundation2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        foundation2Layout.setVerticalGroup(
-            foundation2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
         jLabel1.setMinimumSize(new java.awt.Dimension(2, 2));
 
         jScrollPane1.setForeground(new java.awt.Color(51, 204, 0));
@@ -268,11 +231,17 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane1.setToolTipText("");
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau7.setBackground(new java.awt.Color(51, 204, 0));
         tableau7.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau7.setDragEnabled(true);
         tableau7.setDropMode(javax.swing.DropMode.INSERT);
         tableau7.setName("6"); // NOI18N
         tableau7.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau7MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableau7);
 
         jScrollPane2.setForeground(new java.awt.Color(51, 204, 0));
@@ -280,11 +249,17 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane2.setToolTipText("");
         jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau6.setBackground(new java.awt.Color(51, 204, 0));
         tableau6.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau6.setDragEnabled(true);
         tableau6.setDropMode(javax.swing.DropMode.INSERT);
         tableau6.setName("5"); // NOI18N
         tableau6.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau6MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableau6);
 
         jScrollPane3.setForeground(new java.awt.Color(51, 204, 0));
@@ -292,11 +267,17 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane3.setToolTipText("");
         jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau1.setBackground(new java.awt.Color(51, 204, 0));
         tableau1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau1.setDragEnabled(true);
         tableau1.setDropMode(javax.swing.DropMode.INSERT);
         tableau1.setName("0"); // NOI18N
         tableau1.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau1MouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tableau1);
 
         jScrollPane4.setForeground(new java.awt.Color(51, 204, 0));
@@ -304,11 +285,17 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane4.setToolTipText("");
         jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau2.setBackground(new java.awt.Color(51, 204, 0));
         tableau2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau2.setDragEnabled(true);
         tableau2.setDropMode(javax.swing.DropMode.INSERT);
         tableau2.setName("1"); // NOI18N
         tableau2.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau2MouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tableau2);
 
         jScrollPane5.setForeground(new java.awt.Color(51, 204, 0));
@@ -316,11 +303,17 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane5.setToolTipText("");
         jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau5.setBackground(new java.awt.Color(51, 204, 0));
         tableau5.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau5.setDragEnabled(true);
         tableau5.setDropMode(javax.swing.DropMode.INSERT);
         tableau5.setName("4"); // NOI18N
         tableau5.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau5MouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(tableau5);
 
         jScrollPane6.setForeground(new java.awt.Color(51, 204, 0));
@@ -328,11 +321,17 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane6.setToolTipText("");
         jScrollPane6.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau3.setBackground(new java.awt.Color(51, 204, 0));
         tableau3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau3.setDragEnabled(true);
         tableau3.setDropMode(javax.swing.DropMode.INSERT);
         tableau3.setName("2"); // NOI18N
         tableau3.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau3MouseClicked(evt);
+            }
+        });
         jScrollPane6.setViewportView(tableau3);
 
         jScrollPane7.setForeground(new java.awt.Color(51, 204, 0));
@@ -340,107 +339,159 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jScrollPane7.setToolTipText("");
         jScrollPane7.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
+        tableau4.setBackground(new java.awt.Color(51, 204, 0));
         tableau4.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau4.setDragEnabled(true);
         tableau4.setDropMode(javax.swing.DropMode.INSERT);
         tableau4.setName("3"); // NOI18N
         tableau4.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableau4MouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(tableau4);
+
+        jScrollPane8.setForeground(new java.awt.Color(51, 204, 0));
+        jScrollPane8.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane8.setToolTipText("");
+        jScrollPane8.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        foundation1.setBackground(new java.awt.Color(51, 204, 0));
+        foundation1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        foundation1.setAutoscrolls(false);
+        foundation1.setDragEnabled(true);
+        foundation1.setDropMode(javax.swing.DropMode.INSERT);
+        foundation1.setName("7"); // NOI18N
+        foundation1.setPreferredSize(new java.awt.Dimension(90, 76));
+        jScrollPane8.setViewportView(foundation1);
+
+        jScrollPane9.setForeground(new java.awt.Color(51, 204, 0));
+        jScrollPane9.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane9.setToolTipText("");
+        jScrollPane9.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        foundation2.setBackground(new java.awt.Color(51, 204, 0));
+        foundation2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        foundation2.setAutoscrolls(false);
+        foundation2.setDragEnabled(true);
+        foundation2.setDropMode(javax.swing.DropMode.INSERT);
+        foundation2.setName("7"); // NOI18N
+        foundation2.setPreferredSize(new java.awt.Dimension(90, 76));
+        jScrollPane9.setViewportView(foundation2);
+
+        jScrollPane10.setForeground(new java.awt.Color(51, 204, 0));
+        jScrollPane10.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane10.setToolTipText("");
+        jScrollPane10.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        foundation3.setBackground(new java.awt.Color(51, 204, 0));
+        foundation3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        foundation3.setAutoscrolls(false);
+        foundation3.setDragEnabled(true);
+        foundation3.setDropMode(javax.swing.DropMode.INSERT);
+        foundation3.setName("7"); // NOI18N
+        foundation3.setPreferredSize(new java.awt.Dimension(90, 76));
+        jScrollPane10.setViewportView(foundation3);
+
+        jScrollPane11.setForeground(new java.awt.Color(51, 204, 0));
+        jScrollPane11.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane11.setToolTipText("");
+        jScrollPane11.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        foundation4.setBackground(new java.awt.Color(51, 204, 0));
+        foundation4.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        foundation4.setAutoscrolls(false);
+        foundation4.setDragEnabled(true);
+        foundation4.setDropMode(javax.swing.DropMode.INSERT);
+        foundation4.setName("7"); // NOI18N
+        foundation4.setPreferredSize(new java.awt.Dimension(90, 76));
+        jScrollPane11.setViewportView(foundation4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator2)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(newButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(openButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(saveButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(hintButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(waste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(founcation1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(foundation2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(19, 19, 19)
-                                .addComponent(foundation3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(foundation4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(undoButton)
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(closeButton)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 51, Short.MAX_VALUE))))
+                .addGap(12, 12, 12)
+                .addComponent(newButton)
+                .addGap(5, 5, 5)
+                .addComponent(openButton)
+                .addGap(5, 5, 5)
+                .addComponent(saveButton)
+                .addGap(18, 18, 18)
+                .addComponent(hintButton)
+                .addGap(5, 5, 5)
+                .addComponent(undoButton)
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(closeButton))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(waste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(88, 88, 88)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(4, 4, 4)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(newButton)
-                        .addComponent(openButton)
-                        .addComponent(saveButton)
-                        .addComponent(hintButton)
-                        .addComponent(undoButton))
-                    .addComponent(closeButton)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(newButton)
+                    .addComponent(openButton)
+                    .addComponent(saveButton)
+                    .addComponent(hintButton)
+                    .addComponent(undoButton)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(closeButton))
+                .addGap(6, 6, 6)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(stock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(waste, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(foundation2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(founcation1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(foundation3, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-                        .addComponent(foundation4, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)))
-                .addGap(11, 11, 11)
+                    .addComponent(stock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(waste, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2)
-                    .addComponent(jScrollPane5)
-                    .addComponent(jScrollPane7)
-                    .addComponent(jScrollPane6)
-                    .addComponent(jScrollPane4)
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addComponent(jScrollPane3))
-                .addGap(13, 13, 13))
+                .addContainerGap())
         );
 
         pack();
@@ -466,6 +517,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         jLabel1.setText("Time: 0:0");
         active = true;
         board.resetGame();
+        
+        ImageIcon stockImage = new ImageIcon(Card.class.getResource("/resources/BACK.gif"), "BACK"); 
+        stockLabel.setIcon(stockImage);
 
         final ListModel<Card> wasteModel = board.getListModel(Deck.WASTE, 0);
         Runnable updateWaste = () -> {
@@ -518,6 +572,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau5.setModel(board.getListModel(Deck.TABLEAU, 4));
         tableau6.setModel(board.getListModel(Deck.TABLEAU, 5));
         tableau7.setModel(board.getListModel(Deck.TABLEAU, 6));
+        foundation1.setModel(board.getListModel(Deck.FOUNDATION, 0));
+        foundation2.setModel(board.getListModel(Deck.FOUNDATION, 0));
+        foundation3.setModel(board.getListModel(Deck.FOUNDATION, 0));
+        foundation4.setModel(board.getListModel(Deck.FOUNDATION, 0));
 
         tableau1.setCellRenderer(new CardRenderer());
         tableau2.setCellRenderer(new CardRenderer());
@@ -526,6 +584,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau5.setCellRenderer(new CardRenderer());
         tableau6.setCellRenderer(new CardRenderer());
         tableau7.setCellRenderer(new CardRenderer());
+        foundation1.setCellRenderer(new CardRenderer());
+        foundation2.setCellRenderer(new CardRenderer());
+        foundation3.setCellRenderer(new CardRenderer());
+        foundation4.setCellRenderer(new CardRenderer());
         
         ListItemTransferHandler handler = new ListItemTransferHandler(board);
       
@@ -536,6 +598,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau5.setTransferHandler(handler);
         tableau6.setTransferHandler(handler);
         tableau7.setTransferHandler(handler);
+        foundation1.setTransferHandler(handler);
+        foundation3.setTransferHandler(handler);
+        foundation4.setTransferHandler(handler);
+        foundation4.setTransferHandler(handler);
 
     }//GEN-LAST:event_newButtonActionPerformed
 
@@ -562,22 +628,60 @@ public class GamePanel extends javax.swing.JInternalFrame {
         //when drag-and-dropping, if tryToMove == false, float the card back to its original position
     }//GEN-LAST:event_stockMouseClicked
 
+    private void tableau1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau1MouseClicked
+        turnCard(0);
+    }//GEN-LAST:event_tableau1MouseClicked
 
+    private void tableau2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau2MouseClicked
+        turnCard(1);
+    }//GEN-LAST:event_tableau2MouseClicked
+
+    private void tableau3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau3MouseClicked
+        turnCard(2);
+    }//GEN-LAST:event_tableau3MouseClicked
+
+    private void tableau4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau4MouseClicked
+        turnCard(3);
+    }//GEN-LAST:event_tableau4MouseClicked
+
+    private void tableau5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau5MouseClicked
+        turnCard(4);
+    }//GEN-LAST:event_tableau5MouseClicked
+
+    private void tableau6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau6MouseClicked
+        turnCard(5);
+    }//GEN-LAST:event_tableau6MouseClicked
+
+    private void tableau7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau7MouseClicked
+        turnCard(6);
+    }//GEN-LAST:event_tableau7MouseClicked
+    
+    private void turnCard(int tab){
+        StackModel<Card> tableau = (StackModel<Card>) board.getListModel(TABLEAU, tab);
+        if (tableau.getElementAt(tableau.getSize() - 1).isFaceUp() == false){
+            tableau.getElementAt(tableau.getSize() - 1).setFaceUp(true);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
-    private javax.swing.JPanel founcation1;
-    private javax.swing.JPanel foundation2;
-    private javax.swing.JPanel foundation3;
-    private javax.swing.JPanel foundation4;
+    private javax.swing.JList<Card> foundation1;
+    private javax.swing.JList<Card> foundation2;
+    private javax.swing.JList<Card> foundation3;
+    private javax.swing.JList<Card> foundation4;
     private javax.swing.JButton hintButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton newButton;
@@ -637,8 +741,11 @@ class ListItemTransferHandler extends TransferHandler {
         int sourceIndex = Integer.parseInt(source.getName());
 
         StackModel<Card> stackS = (StackModel<Card>) board.getListModel(TABLEAU,sourceIndex);
-        StackModel<Card> stackT = (StackModel<Card>) board.getListModel(TABLEAU,targetIndex);
 
+        if (targetIndex > 6){
+             return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, stackS.getSize() - 1, Deck.FOUNDATION, targetIndex - 7));
+        }
+        
         if (source.getModel().getSize() == indices[0] + 1){
             return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, stackS.getSize() - 1, Deck.TABLEAU, targetIndex));
         }else{
