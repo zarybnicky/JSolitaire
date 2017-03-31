@@ -5,35 +5,25 @@
  */
 package jgraphics;
 
-import java.io.IOException;
-import javax.swing.DefaultListModel;
-import javax.swing.DropMode;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.activation.ActivationDataFlavor;
+import javax.activation.DataHandler;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import jsolitaire.Board;
 import jsolitaire.Board.Deck;
+import static jsolitaire.Board.Deck.TABLEAU;
 import jsolitaire.Card;
 import jsolitaire.Move;
-import javax.activation.ActivationDataFlavor;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.List;
-import javax.activation.DataHandler;
-import javax.swing.ImageIcon;
-import static jsolitaire.Board.Deck.TABLEAU;
 import jsolitaire.StackModel;
 
 /**
@@ -46,8 +36,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     private final int number;
     private int time = 0;
-    private final Timer timer;
-    private Boolean active = false;
+    private Timer timer;
     private final GameWindow parent;
     private jsolitaire.Board board = new Board();
 
@@ -71,14 +60,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
         closeButton.setMnemonic(KeyEvent.VK_X);
         hintButton.setMnemonic(KeyEvent.VK_Z);
         undoButton.setMnemonic(KeyEvent.VK_Y);
-
-        timer = new Timer(1000, (ActionEvent a1) -> {
-            int min, sec;
-            time++;
-            min = time / 60;
-            sec = time % 60;
-            jLabel1.setText("Time: " + min + ":" + sec);
-        });
     }
 
     /**
@@ -160,27 +141,26 @@ public class GamePanel extends javax.swing.JInternalFrame {
             }
         });
 
-        wasteLabel.setText("jLabel2");
+        waste.setBackground(new java.awt.Color(51, 204, 0));
+        waste.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        wasteLabel.setMaximumSize(new java.awt.Dimension(74, 97));
+        wasteLabel.setMinimumSize(new java.awt.Dimension(74, 97));
+        wasteLabel.setPreferredSize(new java.awt.Dimension(74, 97));
 
         javax.swing.GroupLayout wasteLayout = new javax.swing.GroupLayout(waste);
         waste.setLayout(wasteLayout);
         wasteLayout.setHorizontalGroup(
             wasteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(wasteLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(wasteLabel)
-                .addContainerGap(16, Short.MAX_VALUE))
+            .addComponent(wasteLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         wasteLayout.setVerticalGroup(
             wasteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(wasteLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(wasteLabel)
-                .addContainerGap(33, Short.MAX_VALUE))
+            .addComponent(wasteLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         stock.setBackground(new java.awt.Color(51, 204, 0));
-        stock.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        stock.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         stock.setAlignmentX(0.0F);
         stock.setMaximumSize(new java.awt.Dimension(76, 101));
         stock.setMinimumSize(new java.awt.Dimension(76, 101));
@@ -191,23 +171,19 @@ public class GamePanel extends javax.swing.JInternalFrame {
             }
         });
 
-        stockLabel.setMaximumSize(new java.awt.Dimension(76, 97));
-        stockLabel.setMinimumSize(new java.awt.Dimension(73, 97));
-        stockLabel.setPreferredSize(new java.awt.Dimension(73, 97));
+        stockLabel.setMaximumSize(new java.awt.Dimension(74, 97));
+        stockLabel.setMinimumSize(new java.awt.Dimension(74, 97));
+        stockLabel.setPreferredSize(new java.awt.Dimension(74, 97));
 
         javax.swing.GroupLayout stockLayout = new javax.swing.GroupLayout(stock);
         stock.setLayout(stockLayout);
         stockLayout.setHorizontalGroup(
             stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, stockLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(stockLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         stockLayout.setVerticalGroup(
             stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, stockLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(stockLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(stockLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
         );
 
         hintButton.setText("Hint");
@@ -237,6 +213,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau7.setDropMode(javax.swing.DropMode.INSERT);
         tableau7.setName("6"); // NOI18N
         tableau7.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau7.setCellRenderer(new CardRenderer());
         tableau7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau7MouseClicked(evt);
@@ -255,6 +232,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau6.setDropMode(javax.swing.DropMode.INSERT);
         tableau6.setName("5"); // NOI18N
         tableau6.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau6.setCellRenderer(new CardRenderer());
         tableau6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau6MouseClicked(evt);
@@ -273,6 +251,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau1.setDropMode(javax.swing.DropMode.INSERT);
         tableau1.setName("0"); // NOI18N
         tableau1.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau1.setCellRenderer(new CardRenderer());
         tableau1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau1MouseClicked(evt);
@@ -291,6 +270,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau2.setDropMode(javax.swing.DropMode.INSERT);
         tableau2.setName("1"); // NOI18N
         tableau2.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau2.setCellRenderer(new CardRenderer());
         tableau2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau2MouseClicked(evt);
@@ -309,6 +289,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau5.setDropMode(javax.swing.DropMode.INSERT);
         tableau5.setName("4"); // NOI18N
         tableau5.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau5.setCellRenderer(new CardRenderer());
         tableau5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau5MouseClicked(evt);
@@ -327,6 +308,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau3.setDropMode(javax.swing.DropMode.INSERT);
         tableau3.setName("2"); // NOI18N
         tableau3.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau3.setCellRenderer(new CardRenderer());
         tableau3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau3MouseClicked(evt);
@@ -345,6 +327,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau4.setDropMode(javax.swing.DropMode.INSERT);
         tableau4.setName("3"); // NOI18N
         tableau4.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau4.setCellRenderer(new CardRenderer());
         tableau4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableau4MouseClicked(evt);
@@ -364,6 +347,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation1.setDropMode(javax.swing.DropMode.INSERT);
         foundation1.setName("7"); // NOI18N
         foundation1.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation1.setCellRenderer(new CardRenderer());
         jScrollPane8.setViewportView(foundation1);
 
         jScrollPane9.setForeground(new java.awt.Color(51, 204, 0));
@@ -376,8 +360,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setAutoscrolls(false);
         foundation2.setDragEnabled(true);
         foundation2.setDropMode(javax.swing.DropMode.INSERT);
-        foundation2.setName("7"); // NOI18N
+        foundation2.setName("8"); // NOI18N
         foundation2.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation2.setCellRenderer(new CardRenderer());
         jScrollPane9.setViewportView(foundation2);
 
         jScrollPane10.setForeground(new java.awt.Color(51, 204, 0));
@@ -390,8 +375,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3.setAutoscrolls(false);
         foundation3.setDragEnabled(true);
         foundation3.setDropMode(javax.swing.DropMode.INSERT);
-        foundation3.setName("7"); // NOI18N
+        foundation3.setName("9"); // NOI18N
         foundation3.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation3.setCellRenderer(new CardRenderer());
         jScrollPane10.setViewportView(foundation3);
 
         jScrollPane11.setForeground(new java.awt.Color(51, 204, 0));
@@ -404,8 +390,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation4.setAutoscrolls(false);
         foundation4.setDragEnabled(true);
         foundation4.setDropMode(javax.swing.DropMode.INSERT);
-        foundation4.setName("7"); // NOI18N
+        foundation4.setName("10"); // NOI18N
         foundation4.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation4.setCellRenderer(new CardRenderer());
         jScrollPane11.setViewportView(foundation4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -431,9 +418,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(waste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(88, 88, 88)
+                .addGap(85, 85, 85)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(4, 4, 4)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -473,18 +460,18 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(waste, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(stock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
+                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(waste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING)
@@ -504,8 +491,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     private void hintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hintButtonActionPerformed
         // Help next card
-        if (active) {
-        }
     }//GEN-LAST:event_hintButtonActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
@@ -513,96 +498,8 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        timer.start();
-        jLabel1.setText("Time: 0:0");
-        active = true;
         board.resetGame();
-        
-        ImageIcon stockImage = new ImageIcon(Card.class.getResource("/resources/BACK.gif"), "BACK"); 
-        stockLabel.setIcon(stockImage);
-
-        final ListModel<Card> wasteModel = board.getListModel(Deck.WASTE, 0);
-        Runnable updateWaste = () -> {
-            wasteLabel.setText((wasteModel.getSize() > 0) ? wasteModel.getElementAt(wasteModel.getSize() - 1).getIconName() : "empty");
-        };
-        wasteModel.addListDataListener(new ListDataListener() {
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                updateWaste.run();
-            }
-
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-                updateWaste.run();
-            }
-
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-                updateWaste.run();
-            }
-        });
-        updateWaste.run();
-
-        final ListModel<Card> stockModel = board.getListModel(Deck.STOCK, 0);
-        Runnable updateStock = () -> {
-            stockLabel.setText((stockModel.getSize() > 0) ? stockModel.getElementAt(stockModel.getSize() - 1).getIconName() : "empty");
-        };
-        stockModel.addListDataListener(new ListDataListener() {
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                updateStock.run();
-            }
-
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-                updateStock.run();
-            }
-
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-                updateStock.run();
-            }
-        });
-        updateStock.run();
-
-        tableau1.setModel(board.getListModel(Deck.TABLEAU, 0));
-        tableau2.setModel(board.getListModel(Deck.TABLEAU, 1));
-        tableau3.setModel(board.getListModel(Deck.TABLEAU, 2));
-        tableau4.setModel(board.getListModel(Deck.TABLEAU, 3));
-        tableau5.setModel(board.getListModel(Deck.TABLEAU, 4));
-        tableau6.setModel(board.getListModel(Deck.TABLEAU, 5));
-        tableau7.setModel(board.getListModel(Deck.TABLEAU, 6));
-        foundation1.setModel(board.getListModel(Deck.FOUNDATION, 0));
-        foundation2.setModel(board.getListModel(Deck.FOUNDATION, 0));
-        foundation3.setModel(board.getListModel(Deck.FOUNDATION, 0));
-        foundation4.setModel(board.getListModel(Deck.FOUNDATION, 0));
-
-        tableau1.setCellRenderer(new CardRenderer());
-        tableau2.setCellRenderer(new CardRenderer());
-        tableau3.setCellRenderer(new CardRenderer());
-        tableau4.setCellRenderer(new CardRenderer());
-        tableau5.setCellRenderer(new CardRenderer());
-        tableau6.setCellRenderer(new CardRenderer());
-        tableau7.setCellRenderer(new CardRenderer());
-        foundation1.setCellRenderer(new CardRenderer());
-        foundation2.setCellRenderer(new CardRenderer());
-        foundation3.setCellRenderer(new CardRenderer());
-        foundation4.setCellRenderer(new CardRenderer());
-        
-        ListItemTransferHandler handler = new ListItemTransferHandler(board);
-      
-        tableau1.setTransferHandler(handler);
-        tableau2.setTransferHandler(handler);
-        tableau3.setTransferHandler(handler);
-        tableau4.setTransferHandler(handler);
-        tableau5.setTransferHandler(handler);
-        tableau6.setTransferHandler(handler);
-        tableau7.setTransferHandler(handler);
-        foundation1.setTransferHandler(handler);
-        foundation3.setTransferHandler(handler);
-        foundation4.setTransferHandler(handler);
-        foundation4.setTransferHandler(handler);
-
+        startGame(board);
     }//GEN-LAST:event_newButtonActionPerformed
 
     private void openButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openButtonActionPerformed
@@ -610,7 +507,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         if (f.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
             jsolitaire.Board.deserialize(f.getSelectedFile()).apply(
                     x -> showMessageDialog(parent, x, "Chyba", JOptionPane.ERROR_MESSAGE),
-                    x -> board = x);
+                    x -> startGame(x));
         }
     }//GEN-LAST:event_openButtonActionPerformed
 
@@ -623,8 +520,11 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void stockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stockMouseClicked
-        StackModel<Card> Stock = (StackModel<Card>) board.getListModel(Deck.STOCK,0);
-        System.out.print(board.tryToMove(new Move(Deck.STOCK, 0, Stock.getSize()-1, Deck.WASTE, 0)));
+        if (board.getListModel(Deck.STOCK, 0).getSize() == 0) {
+            board.tryToMove(new Move(Deck.WASTE, 0, board.getListModel(Deck.WASTE, 0).getSize() - 1, Deck.STOCK, 0));
+        } else {
+            board.tryToMove(new Move(Deck.STOCK, 0, 0, Deck.WASTE, 0));
+        }
         //when drag-and-dropping, if tryToMove == false, float the card back to its original position
     }//GEN-LAST:event_stockMouseClicked
 
@@ -655,14 +555,69 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private void tableau7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau7MouseClicked
         turnCard(6);
     }//GEN-LAST:event_tableau7MouseClicked
-    
-    private void turnCard(int tab){
+
+    private void turnCard(int tab) {
         StackModel<Card> tableau = (StackModel<Card>) board.getListModel(TABLEAU, tab);
-        if (tableau.getElementAt(tableau.getSize() - 1).isFaceUp() == false){
+        if (!tableau.getElementAt(tableau.getSize() - 1).isFaceUp()) {
             tableau.getElementAt(tableau.getSize() - 1).setFaceUp(true);
         }
     }
-    
+
+    private void startGame(Board board) {
+        this.board = board;
+        jLabel1.setText("Time: 0:0");
+        if (timer != null) {
+            timer.stop();
+        }
+        timer = new Timer(1000, (ActionEvent a1) -> {
+            int min, sec;
+            time++;
+            min = time / 60;
+            sec = time % 60;
+            jLabel1.setText("Time: " + min + ":" + sec);
+        });
+        timer.start();
+
+        final ListModel<Card> wasteModel = board.getListModel(Deck.WASTE, 0);
+        Runnable updateWaste = () -> {
+            wasteLabel.setIcon((wasteModel.getSize() > 0) ? wasteModel.getElementAt(wasteModel.getSize() - 1).getIcon() : null);
+        };
+        wasteModel.addListDataListener(new SimpleListDataListener(updateWaste));
+        updateWaste.run();
+
+        final ListModel<Card> stockModel = board.getListModel(Deck.STOCK, 0);
+        Runnable updateStock = () -> {
+            stockLabel.setIcon((stockModel.getSize() > 0) ? Card.BACK : null);
+        };
+        stockModel.addListDataListener(new SimpleListDataListener(updateStock));
+        updateStock.run();
+
+        tableau1.setModel(board.getListModel(Deck.TABLEAU, 0));
+        tableau2.setModel(board.getListModel(Deck.TABLEAU, 1));
+        tableau3.setModel(board.getListModel(Deck.TABLEAU, 2));
+        tableau4.setModel(board.getListModel(Deck.TABLEAU, 3));
+        tableau5.setModel(board.getListModel(Deck.TABLEAU, 4));
+        tableau6.setModel(board.getListModel(Deck.TABLEAU, 5));
+        tableau7.setModel(board.getListModel(Deck.TABLEAU, 6));
+        foundation1.setModel(board.getListModel(Deck.FOUNDATION, 0));
+        foundation2.setModel(board.getListModel(Deck.FOUNDATION, 1));
+        foundation3.setModel(board.getListModel(Deck.FOUNDATION, 2));
+        foundation4.setModel(board.getListModel(Deck.FOUNDATION, 3));
+
+        ListItemTransferHandler handler = new ListItemTransferHandler(board);
+        tableau1.setTransferHandler(handler);
+        tableau2.setTransferHandler(handler);
+        tableau3.setTransferHandler(handler);
+        tableau4.setTransferHandler(handler);
+        tableau5.setTransferHandler(handler);
+        tableau6.setTransferHandler(handler);
+        tableau7.setTransferHandler(handler);
+        foundation1.setTransferHandler(handler);
+        foundation2.setTransferHandler(handler);
+        foundation3.setTransferHandler(handler);
+        foundation4.setTransferHandler(handler);
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
     private javax.swing.JList<Card> foundation1;
@@ -703,6 +658,8 @@ public class GamePanel extends javax.swing.JInternalFrame {
 }
 
 class ListItemTransferHandler extends TransferHandler {
+
+    private static final long serialVersionUID = 1L;
     private final DataFlavor localObjectFlavor;
     private JList<?> source;
     private int[] indices;
@@ -713,43 +670,41 @@ class ListItemTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
         this.board = board;
     }
-    @Override protected java.awt.datatransfer.Transferable createTransferable(JComponent c) {
+
+    @Override
+    protected java.awt.datatransfer.Transferable createTransferable(JComponent c) {
         source = (JList<?>) c;
         indices = source.getSelectedIndices();
-        Object[] transferedObjects = source.getSelectedValuesList().toArray(new Object[0]);
+        Object[] transferedObjects = source.getSelectedValuesList().toArray();
         return new DataHandler(transferedObjects, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferHandler.TransferSupport info) {
+
+    @Override
+    public boolean canImport(TransferHandler.TransferSupport info) {
         return info.isDrop() && info.isDataFlavorSupported(localObjectFlavor);
     }
-    @Override public int getSourceActions(JComponent c) {
+
+    @Override
+    public int getSourceActions(JComponent c) {
         return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
     }
-    @SuppressWarnings("unchecked")
-    @Override public boolean importData(TransferHandler.TransferSupport info) {
-        if (!canImport(info)) {
+
+    @Override
+    public boolean importData(TransferHandler.TransferSupport info) {
+        if (!canImport(info) || !(info.getDropLocation() instanceof JList.DropLocation)) {
             return false;
         }
-        TransferHandler.DropLocation tdl = info.getDropLocation();
-        if (!(tdl instanceof JList.DropLocation)) {
-            return false;
-        }
-        JList.DropLocation dl = (JList.DropLocation) tdl;
-        JList target = (JList) info.getComponent();
+        JList<?> target = (JList<?>) info.getComponent();
 
         int targetIndex = Integer.parseInt(target.getName());
         int sourceIndex = Integer.parseInt(source.getName());
 
-        StackModel<Card> stackS = (StackModel<Card>) board.getListModel(TABLEAU,sourceIndex);
-
-        if (targetIndex > 6){
-             return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, stackS.getSize() - 1, Deck.FOUNDATION, targetIndex - 7));
+        if (targetIndex > 6) {
+            return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
         }
-        
-        if (source.getModel().getSize() == indices[0] + 1){
-            return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, stackS.getSize() - 1, Deck.TABLEAU, targetIndex));
-        }else{
-            return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, indices[0], Deck.TABLEAU, targetIndex));
-        } // Dodelat prenos do Foundation? Nebo DoubleClick?
+        return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+        //Dodelat prenos z Foundation, DoubleClick!
+        //foundation looks like a list, not like a single card
+        //drag-drop z waste na tableau, double-click na foundation
     }
 }

@@ -3,15 +3,24 @@
  */
 package jsolitaire;
 
+import java.awt.MediaTracker;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.Objects;
 import javax.swing.ImageIcon;
 
-public class Card {
+public class Card implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final Suit suit;
     private final Rank rank;
     private boolean faceUp;
-    private final ImageIcon icon;
+    private transient ImageIcon icon;
+    
+    public static final ImageIcon BACK = new ImageIcon(Card.class.getResource("/resources/BACK.gif"));
+    public static final ImageIcon MISSING = new ImageIcon(Card.class.getResource("/resources/missing.gif"));
 
     public Card(Suit suit, Rank rank, boolean faceUp) {
         this.suit = suit;
@@ -27,9 +36,13 @@ public class Card {
     public Rank getRank() {
         return rank;
     }
-    
+
     public ImageIcon getIcon() {
-        return icon;
+        ImageIcon i = isFaceUp() ? icon : BACK;
+        if (i.getImageLoadStatus() == MediaTracker.ERRORED) {
+            i = MISSING;
+        }
+        return i;
     }
 
     public boolean isFaceUp() {
@@ -98,5 +111,10 @@ public class Card {
         hash = 7 + 41 * hash + Objects.hashCode(suit);
         hash = 41 * hash + Objects.hashCode(rank);
         return hash;
+    }
+
+    private void readObject(final ObjectInputStream s) throws ClassNotFoundException, IOException {
+        s.defaultReadObject();
+        this.icon = new ImageIcon(Card.class.getResource("/resources/" + getIconName() + ".gif"), getIconName());
     }
 }

@@ -10,21 +10,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 import javax.swing.ListModel;
 
 public class Board implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private final transient List<Runnable> subscribers = new ArrayList<>();
 
     private final StackModel<Move> history = new StackModel<>();
     private final StackModel<Card> stock = new StackModel<>();
@@ -70,11 +67,12 @@ public class Board implements Serializable {
             if (k < 8) {
                 tableau.get(k - 1).add(deck.get(i));
                 if (++j == k) {
-                    tableau.get(k - 1).getElementAt(j-1).setFaceUp(true);
+                    tableau.get(k - 1).getElementAt(j - 1).setFaceUp(true);
                     j = 0;
                     k++;
                 }
             } else {
+                deck.get(i).setFaceUp(true);
                 stock.add(deck.get(i));
             }
         }
@@ -104,34 +102,31 @@ public class Board implements Serializable {
     }
 
     private boolean isValidMove(Move x) {
-        
         Card from = peekCard(x.getFromDeck(), x.getFromSlot(), x.getFromIndex());
-        Card to = null;
-        
-        if (x.getToDeck() != Deck.WASTE){    
-            to = peekCard(x.getToDeck(), x.getToSlot(), getDeckInternal(x.getToDeck(),x.getToSlot()).getSize()-1);
+        Card to = peekCard(x.getToDeck(), x.getToSlot(), 0);
+        if (from == null) {
+            return false;
         }
-
         switch (x.getToDeck()) {
             case STOCK:
-                return false;
+                return x.getFromDeck() == Deck.WASTE;
             case WASTE:
-                if (getDeckInternal(x.getFromDeck(),0).isEmpty()){ // Take nefunguje ani pro size ci empty.
-                    x = x.getInverse();
-                    return true;
-                }
                 return x.getFromDeck() == Deck.STOCK;
             case FOUNDATION:
                 if (x.getFromIndex() > 0) { //can't move a stack to foundation
                     return false;
                 }
-                if (to == null) { // Take nefunguje ani pro size ci empty.
-                    return foundation.stream().allMatch(f -> f.peek() == null || f.peek().getSuit() != from.getSuit())
-                            && from.getRank() == Card.Rank.ACE;
+                if (to == null) {
+                    for (int i = 0; i < 4; i++) {
+                        if (foundation.get(i).peek() != null && foundation.get(i).peek().getSuit() == from.getSuit()) {
+                            return false;
+                        }
+                    }
+                    return from.getRank() == Card.Rank.ACE;
                 }
-                return from.getSuit() == to.getSuit() && from.precedes(to);
+                return from.getSuit() == to.getSuit() && to.precedes(from);
             default:
-                if (to == null) { // Tato detekce nefunguje a detekce pomoci size() ci empty() take ne!!!
+                if (to == null) {
                     return from.getRank() == Card.Rank.KING;
                 }
                 return from.isAlternateColor(to) && from.precedes(to);
@@ -153,17 +148,22 @@ public class Board implements Serializable {
         StackModel<Card> fromDeck = getDeckInternal(move.getFromDeck(), move.getFromSlot());
         StackModel<Card> toDeck = getDeckInternal(move.getToDeck(), move.getToSlot());
 
-        Deque<Card> xs = new ArrayDeque<>();
-        for (int i = move.getFromIndex(); i <= fromDeck.getSize(); i++) {
-            xs.addFirst(fromDeck.pop());
+        Stack<Card> stack = new Stack<>();
+        for (int i = 0; i <= move.getFromIndex(); i++) {
+            stack.push(fromDeck.pop());
         }
-        for (int i = 0; i < xs.size(); i++) {
-            toDeck.push(xs.pop());
+        for (int i = 0; i <= move.getFromIndex(); i++) {
+            toDeck.push(stack.pop());
         }
     }
 
     private Card peekCard(Deck deck, int slot, int num) {
-        return getDeckInternal(deck, slot).stream().skip(num).findFirst().orElse(null);
+        StackModel<Card> x = getDeckInternal(deck, slot);
+        try {
+            return x.get(x.size() - num - 1);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     private StackModel<Card> getDeckInternal(Deck deck, int slot) {

@@ -14,9 +14,6 @@ public class Move implements Serializable {
     private final int fromIndex;
 
     public Move(Deck fromDeck, int fromSlot, int fromIndex, Deck toDeck, int toSlot) {
-        if ((fromDeck != Deck.TABLEAU && fromDeck != Deck.STOCK)&& fromIndex > 0) {
-            throw new RuntimeException("Can't move a stack from someplace other than tableau (we're indexing from the first accessible card!).");
-        }
         this.fromDeck = fromDeck;
         this.fromSlot = fromSlot;
         this.fromIndex = fromIndex;

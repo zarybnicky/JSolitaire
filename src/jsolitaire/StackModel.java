@@ -48,6 +48,19 @@ public class StackModel<T> extends Stack<T> implements ListModel<T> {
     }
 
     @Override
+    public synchronized T peek() {
+        return empty() ? null : super.peek();
+    }
+
+    @Override
+    public void clear() {
+        int size = size();
+        for (int i = 0; i < size; i++) {
+            pop();
+        }
+    }
+
+    @Override
     public void addListDataListener(ListDataListener l) {
         listenerList.add(ListDataListener.class, l);
     }
