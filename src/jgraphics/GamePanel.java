@@ -75,8 +75,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
         openButton = new javax.swing.JButton();
         saveButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
-        waste = new javax.swing.JPanel();
-        wasteLabel = new javax.swing.JLabel();
         stock = new javax.swing.JPanel();
         stockLabel = new javax.swing.JLabel();
         hintButton = new javax.swing.JButton();
@@ -106,6 +104,8 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3 = new javax.swing.JList<>();
         jScrollPane11 = new javax.swing.JScrollPane();
         foundation4 = new javax.swing.JList<>();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        waste = new javax.swing.JList<>();
 
         setBackground(new java.awt.Color(51, 204, 0));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -141,24 +141,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
             }
         });
 
-        waste.setBackground(new java.awt.Color(51, 204, 0));
-        waste.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        wasteLabel.setMaximumSize(new java.awt.Dimension(74, 97));
-        wasteLabel.setMinimumSize(new java.awt.Dimension(74, 97));
-        wasteLabel.setPreferredSize(new java.awt.Dimension(74, 97));
-
-        javax.swing.GroupLayout wasteLayout = new javax.swing.GroupLayout(waste);
-        waste.setLayout(wasteLayout);
-        wasteLayout.setHorizontalGroup(
-            wasteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(wasteLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        wasteLayout.setVerticalGroup(
-            wasteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(wasteLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
         stock.setBackground(new java.awt.Color(51, 204, 0));
         stock.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         stock.setAlignmentX(0.0F);
@@ -183,7 +165,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         );
         stockLayout.setVerticalGroup(
             stockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(stockLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)
+            .addComponent(stockLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         hintButton.setText("Hint");
@@ -347,7 +329,8 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation1.setDropMode(javax.swing.DropMode.INSERT);
         foundation1.setName("7"); // NOI18N
         foundation1.setPreferredSize(new java.awt.Dimension(90, 76));
-        foundation1.setCellRenderer(new CardRenderer());
+        foundation1.setVisibleRowCount(1);
+        foundation1.setCellRenderer(new SimpleCardRenderer());
         jScrollPane8.setViewportView(foundation1);
 
         jScrollPane9.setForeground(new java.awt.Color(51, 204, 0));
@@ -362,7 +345,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setDropMode(javax.swing.DropMode.INSERT);
         foundation2.setName("8"); // NOI18N
         foundation2.setPreferredSize(new java.awt.Dimension(90, 76));
-        foundation2.setCellRenderer(new CardRenderer());
+        foundation2.setCellRenderer(new SimpleCardRenderer());
         jScrollPane9.setViewportView(foundation2);
 
         jScrollPane10.setForeground(new java.awt.Color(51, 204, 0));
@@ -377,7 +360,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3.setDropMode(javax.swing.DropMode.INSERT);
         foundation3.setName("9"); // NOI18N
         foundation3.setPreferredSize(new java.awt.Dimension(90, 76));
-        foundation3.setCellRenderer(new CardRenderer());
+        foundation3.setCellRenderer(new SimpleCardRenderer());
         jScrollPane10.setViewportView(foundation3);
 
         jScrollPane11.setForeground(new java.awt.Color(51, 204, 0));
@@ -390,17 +373,71 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation4.setAutoscrolls(false);
         foundation4.setDragEnabled(true);
         foundation4.setDropMode(javax.swing.DropMode.INSERT);
+        foundation4.setMaximumSize(new java.awt.Dimension(97, 76));
+        foundation4.setMinimumSize(new java.awt.Dimension(97, 76));
         foundation4.setName("10"); // NOI18N
-        foundation4.setPreferredSize(new java.awt.Dimension(90, 76));
-        foundation4.setCellRenderer(new CardRenderer());
+        foundation4.setPreferredSize(new java.awt.Dimension(97, 76));
+        foundation4.setCellRenderer(new SimpleCardRenderer());
         jScrollPane11.setViewportView(foundation4);
+
+        jScrollPane12.setForeground(new java.awt.Color(51, 204, 0));
+        jScrollPane12.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane12.setToolTipText("");
+        jScrollPane12.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
+        waste.setBackground(new java.awt.Color(51, 204, 0));
+        waste.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        waste.setAutoscrolls(false);
+        waste.setDragEnabled(true);
+        waste.setDropMode(javax.swing.DropMode.INSERT);
+        waste.setName("11"); // NOI18N
+        waste.setPreferredSize(new java.awt.Dimension(90, 76));
+        waste.setCellRenderer(new SimpleCardRenderer());
+        waste.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                wasteMouseClicked(evt);
+            }
+        });
+        jScrollPane12.setViewportView(waste);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(20, 20, 20)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(6, 6, 6)
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(80, 80, 80)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(5, 5, 5)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(6, 6, 6)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(4, 4, 4)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGap(20, 20, 20)
                 .addComponent(newButton)
                 .addGap(5, 5, 5)
                 .addComponent(openButton)
@@ -414,41 +451,11 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33)
                 .addComponent(closeButton))
-            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(stock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(waste, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 679, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(7, 7, 7)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
+                .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(newButton)
                     .addComponent(openButton)
@@ -457,27 +464,32 @@ public class GamePanel extends javax.swing.JInternalFrame {
                     .addComponent(undoButton)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(closeButton))
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 3, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(stock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(waste, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(stock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane9, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane7)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane3))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
 
@@ -529,33 +541,69 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_stockMouseClicked
 
     private void tableau1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau1MouseClicked
-        turnCard(0);
+        if(evt.getClickCount() == 2)
+            tryFoundation(0, Deck.TABLEAU);
+        else
+            turnCard(0);
     }//GEN-LAST:event_tableau1MouseClicked
 
     private void tableau2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau2MouseClicked
-        turnCard(1);
+        if(evt.getClickCount() == 2)
+            tryFoundation(1, Deck.TABLEAU);
+        else
+            turnCard(1);
     }//GEN-LAST:event_tableau2MouseClicked
 
     private void tableau3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau3MouseClicked
-        turnCard(2);
+        if(evt.getClickCount() == 2)
+            tryFoundation(2, Deck.TABLEAU);
+        else
+            turnCard(2);
     }//GEN-LAST:event_tableau3MouseClicked
 
     private void tableau4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau4MouseClicked
-        turnCard(3);
+        if(evt.getClickCount() == 2)
+            tryFoundation(3, Deck.TABLEAU);
+        else
+            turnCard(3);
     }//GEN-LAST:event_tableau4MouseClicked
 
     private void tableau5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau5MouseClicked
-        turnCard(4);
+        if(evt.getClickCount() == 2)
+            tryFoundation(4, Deck.TABLEAU);
+        else
+            turnCard(4);
     }//GEN-LAST:event_tableau5MouseClicked
 
     private void tableau6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau6MouseClicked
-        turnCard(5);
+        if(evt.getClickCount() == 2)
+            tryFoundation(5, Deck.TABLEAU);
+        else
+            turnCard(5);
     }//GEN-LAST:event_tableau6MouseClicked
 
     private void tableau7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau7MouseClicked
-        turnCard(6);
+        if(evt.getClickCount() == 2)
+            tryFoundation(6, Deck.TABLEAU);
+        else
+            turnCard(6);
     }//GEN-LAST:event_tableau7MouseClicked
 
+    private void wasteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wasteMouseClicked
+        if(evt.getClickCount() == 2)
+            tryFoundation(0, Deck.WASTE);
+    }//GEN-LAST:event_wasteMouseClicked
+
+    private void tryFoundation(int tab, Deck deck){
+        for (int i = 0; i < 4 ; i++){
+            if (board.tryToMove(new Move(deck, tab, 0, Deck.FOUNDATION, i))){
+                if (board.isGameWon()) 
+                    showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
+                break;
+            }
+        }
+    }
+    
     private void turnCard(int tab) {
         StackModel<Card> tableau = (StackModel<Card>) board.getListModel(TABLEAU, tab);
         if (!tableau.getElementAt(tableau.getSize() - 1).isFaceUp()) {
@@ -565,7 +613,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     private void startGame(Board board) {
         this.board = board;
-        jLabel1.setText("Time: 0:0");
+        jLabel1.setText("Time: 0:00");
         if (timer != null) {
             timer.stop();
         }
@@ -574,16 +622,13 @@ public class GamePanel extends javax.swing.JInternalFrame {
             time++;
             min = time / 60;
             sec = time % 60;
-            jLabel1.setText("Time: " + min + ":" + sec);
+            if (sec < 10)
+                jLabel1.setText("Time: " + min + ":0" + sec);
+            else
+                jLabel1.setText("Time: " + min + ":" + sec);
+
         });
         timer.start();
-
-        final ListModel<Card> wasteModel = board.getListModel(Deck.WASTE, 0);
-        Runnable updateWaste = () -> {
-            wasteLabel.setIcon((wasteModel.getSize() > 0) ? wasteModel.getElementAt(wasteModel.getSize() - 1).getIcon() : null);
-        };
-        wasteModel.addListDataListener(new SimpleListDataListener(updateWaste));
-        updateWaste.run();
 
         final ListModel<Card> stockModel = board.getListModel(Deck.STOCK, 0);
         Runnable updateStock = () -> {
@@ -603,6 +648,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setModel(board.getListModel(Deck.FOUNDATION, 1));
         foundation3.setModel(board.getListModel(Deck.FOUNDATION, 2));
         foundation4.setModel(board.getListModel(Deck.FOUNDATION, 3));
+        waste.setModel(board.getListModel(Deck.WASTE, 0));
 
         ListItemTransferHandler handler = new ListItemTransferHandler(board);
         tableau1.setTransferHandler(handler);
@@ -616,6 +662,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setTransferHandler(handler);
         foundation3.setTransferHandler(handler);
         foundation4.setTransferHandler(handler);
+        waste.setTransferHandler(handler);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -629,6 +676,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -652,8 +700,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private javax.swing.JList<Card> tableau6;
     private javax.swing.JList<Card> tableau7;
     private javax.swing.JButton undoButton;
-    private javax.swing.JPanel waste;
-    private javax.swing.JLabel wasteLabel;
+    private javax.swing.JList<Card> waste;
     // End of variables declaration//GEN-END:variables
 }
 
@@ -699,12 +746,37 @@ class ListItemTransferHandler extends TransferHandler {
         int targetIndex = Integer.parseInt(target.getName());
         int sourceIndex = Integer.parseInt(source.getName());
 
-        if (targetIndex > 6) {
+        if (targetIndex == 11) return false;    
+        
+        if (targetIndex > 6 && sourceIndex != 11) {
             return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
         }
+        
+        if (sourceIndex > 6 && sourceIndex < 11){
+            if (targetIndex > 6){
+                return board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
+            }
+            
+            return board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex-7, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+            
+        }
+        
+        if (sourceIndex == 11){
+            System.out.println("in");
+            if (targetIndex > 6){
+                System.out.println("test");
+                return board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.FOUNDATION, targetIndex - 7));
+            }
+             return board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+             
+        }
+        
         return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
-        //Dodelat prenos z Foundation, DoubleClick!
-        //foundation looks like a list, not like a single card
-        //drag-drop z waste na tableau, double-click na foundation
+        //Reset count of timer.
+        //Stock reverting
+        //Pri nacteni hry nebo priprave nove, kdyz je uz nejaka rozehrana se neobjevuji nektere karty. Upresneni nezobrazi se v jiz prazdnych polich
+        //Undo turn cardface
+        //Pridat k presunu -> if (board.isGameWon()) showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
+        //Save/load time
     }
 }

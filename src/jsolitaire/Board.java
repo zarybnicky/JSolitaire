@@ -155,6 +155,7 @@ public class Board implements Serializable {
         for (int i = 0; i <= move.getFromIndex(); i++) {
             toDeck.push(stack.pop());
         }
+        
     }
 
     private Card peekCard(Deck deck, int slot, int num) {
