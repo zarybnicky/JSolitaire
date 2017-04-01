@@ -193,8 +193,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau7.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tableau7.setDragEnabled(true);
         tableau7.setDropMode(javax.swing.DropMode.INSERT);
+        tableau7.setMaximumSize(new java.awt.Dimension(0, 175));
         tableau7.setName("6"); // NOI18N
-        tableau7.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau7.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau7.setCellRenderer(new CardRenderer());
         tableau7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -213,7 +214,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau6.setDragEnabled(true);
         tableau6.setDropMode(javax.swing.DropMode.INSERT);
         tableau6.setName("5"); // NOI18N
-        tableau6.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau6.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau6.setCellRenderer(new CardRenderer());
         tableau6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -232,7 +233,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau1.setDragEnabled(true);
         tableau1.setDropMode(javax.swing.DropMode.INSERT);
         tableau1.setName("0"); // NOI18N
-        tableau1.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau1.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau1.setCellRenderer(new CardRenderer());
         tableau1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -251,7 +252,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau2.setDragEnabled(true);
         tableau2.setDropMode(javax.swing.DropMode.INSERT);
         tableau2.setName("1"); // NOI18N
-        tableau2.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau2.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau2.setCellRenderer(new CardRenderer());
         tableau2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -270,7 +271,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau5.setDragEnabled(true);
         tableau5.setDropMode(javax.swing.DropMode.INSERT);
         tableau5.setName("4"); // NOI18N
-        tableau5.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau5.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau5.setCellRenderer(new CardRenderer());
         tableau5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -289,7 +290,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau3.setDragEnabled(true);
         tableau3.setDropMode(javax.swing.DropMode.INSERT);
         tableau3.setName("2"); // NOI18N
-        tableau3.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau3.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau3.setCellRenderer(new CardRenderer());
         tableau3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -308,7 +309,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau4.setDragEnabled(true);
         tableau4.setDropMode(javax.swing.DropMode.INSERT);
         tableau4.setName("3"); // NOI18N
-        tableau4.setPreferredSize(new java.awt.Dimension(0, 73));
+        tableau4.setPreferredSize(new java.awt.Dimension(73, 175));
         tableau4.setCellRenderer(new CardRenderer());
         tableau4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -483,14 +484,14 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1))
+                .addGap(3, 3, 3))
         );
 
         pack();
@@ -745,38 +746,40 @@ class ListItemTransferHandler extends TransferHandler {
 
         int targetIndex = Integer.parseInt(target.getName());
         int sourceIndex = Integer.parseInt(source.getName());
+        
+        boolean ret;
 
         if (targetIndex == 11) return false;    
         
         if (targetIndex > 6 && sourceIndex != 11) {
-            return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
+            ret = board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
         }
         
         if (sourceIndex > 6 && sourceIndex < 11){
             if (targetIndex > 6){
-                return board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
+                ret = board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
             }
             
-            return board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex-7, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+            ret = board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex-7, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
             
         }
         
         if (sourceIndex == 11){
-            System.out.println("in");
             if (targetIndex > 6){
-                System.out.println("test");
-                return board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.FOUNDATION, targetIndex - 7));
+                ret = board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.FOUNDATION, targetIndex - 7));
             }
-             return board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+             ret = board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
              
         }
         
-        return board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+        ret = board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
+        
+        //if (board.isGameWon()) showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
+        return ret;
         //Reset count of timer.
         //Stock reverting
         //Pri nacteni hry nebo priprave nove, kdyz je uz nejaka rozehrana se neobjevuji nektere karty. Upresneni nezobrazi se v jiz prazdnych polich
         //Undo turn cardface
-        //Pridat k presunu -> if (board.isGameWon()) showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
         //Save/load time
     }
 }
