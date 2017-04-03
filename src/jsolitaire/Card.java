@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
 
-public class Card implements Serializable {
+public class Card extends Observable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,6 +21,7 @@ public class Card implements Serializable {
     private final Rank rank;
     private boolean faceUp;
     private transient ImageIcon icon;
+    private transient boolean greyedOut = false;
     
     public static final ImageIcon BACK = new ImageIcon(Card.class.getResource("/resources/BACK.gif"));
     public static final ImageIcon MISSING = new ImageIcon(Card.class.getResource("/resources/missing.gif"));
@@ -39,6 +43,9 @@ public class Card implements Serializable {
 
     public ImageIcon getIcon() {
         ImageIcon i = isFaceUp() ? icon : BACK;
+        if (isGreyedOut()) {
+            i = new ImageIcon(GrayFilter.createDisabledImage(i.getImage()));
+        }
         if (i.getImageLoadStatus() == MediaTracker.ERRORED) {
             i = MISSING;
         }
@@ -48,9 +55,21 @@ public class Card implements Serializable {
     public boolean isFaceUp() {
         return faceUp;
     }
+    
+    public boolean isGreyedOut() {
+        return greyedOut;
+    }
 
     public void setFaceUp(boolean faceUp) {
         this.faceUp = faceUp;
+        System.out.println("updating?");
+        notifyObservers();
+    }
+
+    public void setGreyedOut(boolean greyedOut) {
+        this.greyedOut = greyedOut;
+        System.out.println("updating?");
+        notifyObservers();
     }
 
     public boolean isAlternateColor(Card c) {

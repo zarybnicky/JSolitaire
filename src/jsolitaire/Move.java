@@ -1,32 +1,35 @@
 package jsolitaire;
 
 import java.io.Serializable;
+import java.util.Observable;
 import jsolitaire.Board.Deck;
 
-public class Move implements Serializable {
+public class Move extends Observable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Deck fromDeck;
-    private final int fromSlot;
-    private final Deck toDeck;
-    private final int toSlot;
+    private final Pair<Deck, Integer> from;
+    private final Pair<Deck, Integer> to;
     private final int fromIndex;
 
     public Move(Deck fromDeck, int fromSlot, int fromIndex, Deck toDeck, int toSlot) {
-        this.fromDeck = fromDeck;
-        this.fromSlot = fromSlot;
+        this.from = Pair.of(fromDeck, fromSlot);
+        this.to = Pair.of(toDeck, toSlot);
         this.fromIndex = fromIndex;
-        this.toDeck = toDeck;
-        this.toSlot = toSlot;
+    }
+
+    public Move(Pair<Deck, Integer> from, Pair<Deck, Integer> to, int fromIndex) {
+        this.from = from;
+        this.to = to;
+        this.fromIndex = fromIndex;
     }
 
     public Deck getFromDeck() {
-        return fromDeck;
+        return from.getFirst();
     }
 
     public int getFromSlot() {
-        return fromSlot;
+        return from.getSecond();
     }
 
     public int getFromIndex() {
@@ -34,14 +37,22 @@ public class Move implements Serializable {
     }
 
     public Deck getToDeck() {
-        return toDeck;
+        return to.getFirst();
     }
 
     public int getToSlot() {
-        return toSlot;
+        return to.getSecond();
+    }
+    
+    public Pair<Deck, Integer> getFromPair() {
+        return from;
+    }
+    
+    public Pair<Deck, Integer> getToPair() {
+        return to;
     }
     
     public Move getInverse() {
-        return new Move(toDeck, toSlot, fromIndex, fromDeck, fromSlot);
+        return new Move(to, from, fromIndex);
     }
 }

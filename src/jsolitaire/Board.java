@@ -26,8 +26,35 @@ public class Board implements Serializable {
     private final StackModel<Move> history = new StackModel<>();
     private final StackModel<Card> stock = new StackModel<>();
     private final StackModel<Card> waste = new StackModel<>();
-    private final List<StackModel<Card>> foundation = Arrays.asList(new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>());
-    private final List<StackModel<Card>> tableau = Arrays.asList(new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>(), new StackModel<>());
+    private final List<StackModel<Card>> foundation = Arrays.asList(
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>());
+    private final List<StackModel<Card>> tableau = Arrays.asList(
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>(),
+            new StackModel<>());
+    private final List<Pair<Deck, Integer>> deckCombinations = Arrays.asList(
+            Pair.of(Deck.WASTE, 0),
+            Pair.of(Deck.TABLEAU, 0),
+            Pair.of(Deck.TABLEAU, 1),
+            Pair.of(Deck.TABLEAU, 2),
+            Pair.of(Deck.TABLEAU, 3),
+            Pair.of(Deck.TABLEAU, 4),
+            Pair.of(Deck.TABLEAU, 5),
+            Pair.of(Deck.TABLEAU, 6),
+            Pair.of(Deck.FOUNDATION, 0),
+            Pair.of(Deck.FOUNDATION, 1),
+            Pair.of(Deck.FOUNDATION, 2),
+            Pair.of(Deck.FOUNDATION, 3),
+            Pair.of(Deck.STOCK, 0));
+    private List<Move> hints = null;
+    private int hintsIndex;
 
     public enum Deck {
         STOCK,
@@ -65,7 +92,7 @@ public class Board implements Serializable {
         List<Card> deck = getShuffledDeck();
         for (int i = 0, j = 0, k = 1; i < 52; i++) {
             if (k < 8) {
-                tableau.get(k - 1).add(deck.get(i));
+                tableau.get(k - 1).push(deck.get(i));
                 if (++j == k) {
                     tableau.get(k - 1).getElementAt(j - 1).setFaceUp(true);
                     j = 0;
@@ -73,7 +100,7 @@ public class Board implements Serializable {
                 }
             } else {
                 deck.get(i).setFaceUp(true);
-                stock.add(deck.get(i));
+                stock.push(deck.get(i));
             }
         }
     }
@@ -86,12 +113,14 @@ public class Board implements Serializable {
         if (!isValidMove(move)) {
             return false;
         }
+        hints = null;
         performMove(move);
         history.push(move);
         return true;
     }
 
     public void goBack() {
+        hints = null;
         if (!history.isEmpty()) {
             performMove(history.pop().getInverse());
         }
@@ -101,15 +130,42 @@ public class Board implements Serializable {
         return getDeckInternal(deck, slot);
     }
 
+    public Optional<Move> getHint() {
+        if (hints != null) {
+            if (hints.isEmpty()) {
+                return Optional.empty();
+            }
+            Move x = hints.get(hintsIndex);
+            hintsIndex = (hintsIndex + 1) % hints.size();
+            return Optional.of(x);
+        }
+        hints = new ArrayList<>();
+        deckCombinations.forEach(from -> deckCombinations.forEach(to -> {
+            for (int index = getUsableSize(from); index >= 0; index--) {
+                if (!from.equals(to)) {
+                    Move x = new Move(from, to, index);
+                    if (isValidMove(x)) {
+                        hints.add(x);
+                    }
+                }
+            }
+        }));
+        hintsIndex = 0;
+        return getHint();
+    }
+
     private boolean isValidMove(Move x) {
-        Card from = peekCard(x.getFromDeck(), x.getFromSlot(), x.getFromIndex());
-        Card to = peekCard(x.getToDeck(), x.getToSlot(), 0);
-        if (from == null) {
+        Card from = peekCard(x.getFromPair(), x.getFromIndex());
+        Card to = peekCard(x.getToPair(), 0);
+        if (from == null || !from.isFaceUp()) {
+            return false;
+        }
+        if (x.getFromDeck() == Deck.STOCK && x.getToDeck() != Deck.WASTE) {
             return false;
         }
         switch (x.getToDeck()) {
             case STOCK:
-                return x.getFromDeck() == Deck.WASTE;
+                return x.getFromDeck() == Deck.WASTE && getDeckInternal(Deck.STOCK, 0).empty();
             case WASTE:
                 return x.getFromDeck() == Deck.STOCK;
             case FOUNDATION:
@@ -145,8 +201,8 @@ public class Board implements Serializable {
     }
 
     private void performMove(Move move) {
-        StackModel<Card> fromDeck = getDeckInternal(move.getFromDeck(), move.getFromSlot());
-        StackModel<Card> toDeck = getDeckInternal(move.getToDeck(), move.getToSlot());
+        StackModel<Card> fromDeck = getDeckPair(move.getFromPair());
+        StackModel<Card> toDeck = getDeckPair(move.getToPair());
 
         Stack<Card> stack = new Stack<>();
         for (int i = 0; i <= move.getFromIndex(); i++) {
@@ -155,16 +211,19 @@ public class Board implements Serializable {
         for (int i = 0; i <= move.getFromIndex(); i++) {
             toDeck.push(stack.pop());
         }
-        
     }
 
-    private Card peekCard(Deck deck, int slot, int num) {
-        StackModel<Card> x = getDeckInternal(deck, slot);
+    private Card peekCard(Pair<Deck, Integer> deck, int num) {
+        StackModel<Card> x = getDeckPair(deck);
         try {
             return x.get(x.size() - num - 1);
         } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
+    }
+
+    private StackModel<Card> getDeckPair(Pair<Deck, Integer> x) {
+        return getDeckInternal(x.getFirst(), x.getSecond());
     }
 
     private StackModel<Card> getDeckInternal(Deck deck, int slot) {
@@ -177,6 +236,31 @@ public class Board implements Serializable {
                 return foundation.get(slot);
             default:
                 return tableau.get(slot);
+        }
+    }
+
+    private int getUsableSize(Pair<Deck, Integer> x) {
+        switch (x.getFirst()) {
+            case FOUNDATION:
+            case STOCK:
+            case WASTE:
+                return getDeckPair(x).getSize() > 0 ? 0 : -1;
+            default:
+                StackModel<Card> deck = getDeckPair(x);
+                if (deck.getSize() == 0) {
+                    return -1;
+                }
+                int index = 0;
+                Card card = deck.lastElement();
+                for (int i = deck.getSize() - 2; i >= 0; i--) {
+                    Card nextCard = deck.get(i);
+                    if (!card.isAlternateColor(nextCard) || !card.precedes(nextCard)) {
+                        break;
+                    }
+                    index++;
+                    card = nextCard;
+                }
+                return index;
         }
     }
 }

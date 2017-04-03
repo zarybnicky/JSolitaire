@@ -4,13 +4,15 @@
 package jsolitaire;
 
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Stack;
 import javax.swing.ListModel;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-public class StackModel<T> extends Stack<T> implements ListModel<T> {
+public class StackModel<T extends Observable> extends Stack<T> implements ListModel<T>, Observer {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,6 +37,7 @@ public class StackModel<T> extends Stack<T> implements ListModel<T> {
     public synchronized T pop() {
         int i = size() - 1;
         T x = super.pop();
+        x.deleteObserver(this);
         fireIntervalRemoved(this, i, i);
         return x;
     }
@@ -43,6 +46,7 @@ public class StackModel<T> extends Stack<T> implements ListModel<T> {
     public T push(T item) {
         int i = size();
         T x = super.push(item);
+        x.addObserver(this);
         fireIntervalAdded(this, i, i);
         return x;
     }
@@ -86,5 +90,11 @@ public class StackModel<T> extends Stack<T> implements ListModel<T> {
         ListDataEvent e = new ListDataEvent(source, ListDataEvent.INTERVAL_REMOVED, index0, index1);
         Arrays.asList(listenerList.getListeners(ListDataListener.class))
                 .forEach(y -> y.intervalRemoved(e));
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        System.out.println("updating!");
+        fireContentsChanged(this, 0, size() - 1);
     }
 }

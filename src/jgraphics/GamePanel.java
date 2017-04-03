@@ -8,6 +8,7 @@ package jgraphics;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.util.Optional;
 import javax.activation.ActivationDataFlavor;
 import javax.activation.DataHandler;
 import javax.swing.JComponent;
@@ -24,6 +25,7 @@ import jsolitaire.Board.Deck;
 import static jsolitaire.Board.Deck.TABLEAU;
 import jsolitaire.Card;
 import jsolitaire.Move;
+import jsolitaire.Pair;
 import jsolitaire.StackModel;
 
 /**
@@ -503,7 +505,34 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void hintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hintButtonActionPerformed
-        // Help next card
+        Optional<Move> hint = board.getHint();
+        hint.ifPresent(x -> {
+            System.out.print(x.getFromDeck());
+            System.out.println(x.getFromSlot());
+            System.out.print(x.getToDeck());
+            System.out.println(x.getToSlot());
+            System.out.println(x.getFromIndex());
+
+            ListModel<Card> fromDeck = board.getListModel(x.getFromDeck(), x.getFromSlot());
+            ListModel<Card> toDeck = board.getListModel(x.getToDeck(), x.getToSlot());
+            if (toDeck.getSize() == 0) {
+                //A co když to dáváme na prázdný deck???, nějaký šedý overlay na prázdný JList?
+                return;
+            }
+            Card fromCard = fromDeck.getElementAt(fromDeck.getSize() - x.getFromIndex() - 1);
+            Card toCard = toDeck.getElementAt(toDeck.getSize() - 1);
+            new Thread(() -> {
+                try {
+                    fromCard.setGreyedOut(true);
+                    Thread.sleep(600);
+                    fromCard.setGreyedOut(false);
+                    toCard.setGreyedOut(true);
+                    Thread.sleep(600);
+                    toCard.setGreyedOut(false);
+                } catch (InterruptedException ex) {
+                }
+            }).start();
+        });
     }//GEN-LAST:event_hintButtonActionPerformed
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
@@ -542,69 +571,78 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_stockMouseClicked
 
     private void tableau1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau1MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(0, Deck.TABLEAU);
-        else
+        } else {
             turnCard(0);
+        }
     }//GEN-LAST:event_tableau1MouseClicked
 
     private void tableau2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau2MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(1, Deck.TABLEAU);
-        else
+        } else {
             turnCard(1);
+        }
     }//GEN-LAST:event_tableau2MouseClicked
 
     private void tableau3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau3MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(2, Deck.TABLEAU);
-        else
+        } else {
             turnCard(2);
+        }
     }//GEN-LAST:event_tableau3MouseClicked
 
     private void tableau4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau4MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(3, Deck.TABLEAU);
-        else
+        } else {
             turnCard(3);
+        }
     }//GEN-LAST:event_tableau4MouseClicked
 
     private void tableau5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau5MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(4, Deck.TABLEAU);
-        else
+        } else {
             turnCard(4);
+        }
     }//GEN-LAST:event_tableau5MouseClicked
 
     private void tableau6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau6MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(5, Deck.TABLEAU);
-        else
+        } else {
             turnCard(5);
+        }
     }//GEN-LAST:event_tableau6MouseClicked
 
     private void tableau7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau7MouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(6, Deck.TABLEAU);
-        else
+        } else {
             turnCard(6);
+        }
     }//GEN-LAST:event_tableau7MouseClicked
 
     private void wasteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wasteMouseClicked
-        if(evt.getClickCount() == 2)
+        if (evt.getClickCount() == 2) {
             tryFoundation(0, Deck.WASTE);
+        }
     }//GEN-LAST:event_wasteMouseClicked
 
-    private void tryFoundation(int tab, Deck deck){
-        for (int i = 0; i < 4 ; i++){
-            if (board.tryToMove(new Move(deck, tab, 0, Deck.FOUNDATION, i))){
-                if (board.isGameWon()) 
+    private void tryFoundation(int tab, Deck deck) {
+        for (int i = 0; i < 4; i++) {
+            if (board.tryToMove(new Move(deck, tab, 0, Deck.FOUNDATION, i))) {
+                if (board.isGameWon()) {
                     showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
+                }
                 break;
             }
         }
     }
-    
+
     private void turnCard(int tab) {
         StackModel<Card> tableau = (StackModel<Card>) board.getListModel(TABLEAU, tab);
         if (!tableau.getElementAt(tableau.getSize() - 1).isFaceUp()) {
@@ -623,10 +661,11 @@ public class GamePanel extends javax.swing.JInternalFrame {
             time++;
             min = time / 60;
             sec = time % 60;
-            if (sec < 10)
+            if (sec < 10) {
                 jLabel1.setText("Time: " + min + ":0" + sec);
-            else
+            } else {
                 jLabel1.setText("Time: " + min + ":" + sec);
+            }
 
         });
         timer.start();
@@ -742,44 +781,34 @@ class ListItemTransferHandler extends TransferHandler {
         if (!canImport(info) || !(info.getDropLocation() instanceof JList.DropLocation)) {
             return false;
         }
-        JList<?> target = (JList<?>) info.getComponent();
 
-        int targetIndex = Integer.parseInt(target.getName());
-        int sourceIndex = Integer.parseInt(source.getName());
-        
-        boolean ret;
+        Pair<Deck, Integer> sourceDeck = indexToDeck(Integer.parseInt(source.getName()));
+        Pair<Deck, Integer> targetDeck = indexToDeck(Integer.parseInt(info.getComponent().getName()));
 
-        if (targetIndex == 11) return false;    
-        
-        if (targetIndex > 6 && sourceIndex != 11) {
-            ret = board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
-        }
-        
-        if (sourceIndex > 6 && sourceIndex < 11){
-            if (targetIndex > 6){
-                ret = board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex, 0, Deck.FOUNDATION, targetIndex - 7));
-            }
-            
-            ret = board.tryToMove(new Move(Deck.FOUNDATION, sourceIndex-7, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
-            
-        }
-        
-        if (sourceIndex == 11){
-            if (targetIndex > 6){
-                ret = board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.FOUNDATION, targetIndex - 7));
-            }
-             ret = board.tryToMove(new Move(Deck.WASTE, 0, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
-             
-        }
-        
-        ret = board.tryToMove(new Move(Deck.TABLEAU, sourceIndex, source.getModel().getSize() - indices[0] - 1, Deck.TABLEAU, targetIndex));
-        
+        Move x = new Move(sourceDeck, targetDeck, source.getModel().getSize() - indices[0] - 1);
+        System.out.print(x.getFromDeck());
+        System.out.println(x.getFromSlot());
+        System.out.print(x.getToDeck());
+        System.out.println(x.getToSlot());
+        System.out.println(x.getFromIndex());
+        System.out.println(board.tryToMove(x));
+        return true;
+
         //if (board.isGameWon()) showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
-        return ret;
         //Reset count of timer.
         //Stock reverting
         //Pri nacteni hry nebo priprave nove, kdyz je uz nejaka rozehrana se neobjevuji nektere karty. Upresneni nezobrazi se v jiz prazdnych polich
         //Undo turn cardface
         //Save/load time
+    }
+
+    private Pair<Deck, Integer> indexToDeck(int i) {
+        if (i < 7) {
+            return Pair.of(Deck.TABLEAU, i);
+        }
+        if (i < 11) {
+            return Pair.of(Deck.FOUNDATION, i - 7);
+        }
+        return Pair.of(Deck.WASTE, 0);
     }
 }
