@@ -17,8 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
-import java.util.TimerTask;
 import java.util.Timer;
+import java.util.TimerTask;
+import java.util.function.Consumer;
 import javax.swing.ListModel;
 
 public class Board implements Serializable {
@@ -55,10 +56,13 @@ public class Board implements Serializable {
             Pair.of(Deck.FOUNDATION, 2),
             Pair.of(Deck.FOUNDATION, 3),
             Pair.of(Deck.STOCK, 0));
-    private List<Move> hints = null;
-    private int hintsIndex;
-    private Timer timer = null;
-    private int time = 0;
+
+    private int time = -1;
+
+    private transient int hintsIndex;
+    private transient List<Move> hints = null;
+    private transient Timer timer = null;
+    private transient Runnable onWin;
 
     public enum Deck {
         STOCK,
@@ -109,10 +113,6 @@ public class Board implements Serializable {
         }
     }
 
-    public boolean isGameWon() {
-        return stock.isEmpty() && waste.isEmpty() && tableau.stream().allMatch(StackModel::isEmpty);
-    }
-
     public boolean tryToMove(Move move) {
         if (!isValidMove(move)) {
             return false;
@@ -120,6 +120,9 @@ public class Board implements Serializable {
         hints = null;
         performMove(move);
         history.push(move);
+        if (stock.isEmpty() && waste.isEmpty() && tableau.stream().allMatch(StackModel::isEmpty)) {
+            onWin.run();
+        }
         return true;
     }
 
@@ -157,46 +160,36 @@ public class Board implements Serializable {
         hintsIndex = 0;
         return getHint();
     }
-    
-    public void startTimer() {
-        TimerTask timerTask = new TimerTask(){
 
+    public void setOnWin(Runnable fn) {
+        this.onWin = fn;
+    }
+
+    public void startTimer(Consumer<Integer> fn) {
+        TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
                 time++;
-                System.out.println(time);
-                maintainceTimer();
-                //Pripraveno pro volani funkce z GamePanel writeTime();  
+                fn.accept(time);
             }
         };
-        
-        if (timer == null){
+
+        if (timer == null) {
             timer = new Timer();
-            timer.schedule(timerTask, 1000);
         } else {
             timer.cancel();
-            time = 0;
-            timer = new Timer();
-            timer.schedule(timerTask, 1000);
         }
-
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
-    
-    private void maintainceTimer(){
-        TimerTask timerTask = new TimerTask(){
 
-            @Override
-            public void run() {
-                time++;
-                System.out.println(time);
-                maintainceTimer();
-                //Pripraveno pro volani funkce z GamePanel writeTime();  
-            }
-        };
-        
-        timer.cancel();
-        timer = new Timer();
-        timer.schedule(timerTask, 1000);
+    public void stopTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    public int getTime() {
+        return time;
     }
 
     private boolean isValidMove(Move x) {
@@ -248,6 +241,13 @@ public class Board implements Serializable {
     private void performMove(Move move) {
         StackModel<Card> fromDeck = getDeckPair(move.getFromPair());
         StackModel<Card> toDeck = getDeckPair(move.getToPair());
+
+        if (move.getFromDeck() == Deck.WASTE && move.getToDeck() == Deck.STOCK) {
+            for (int i = 0; i <= move.getFromIndex(); i++) {
+                toDeck.push(fromDeck.pop());
+            }
+            return;
+        }
 
         Stack<Card> stack = new Stack<>();
         for (int i = 0; i <= move.getFromIndex(); i++) {

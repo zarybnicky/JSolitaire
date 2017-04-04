@@ -1,12 +1,15 @@
 /*
  * License
  */
-
 package jsolitaire;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Pair<T0, T1> {
+public class Pair<T0, T1> implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private final T0 first;
     private final T1 second;
 
@@ -22,7 +25,7 @@ public class Pair<T0, T1> {
     public T1 getSecond() {
         return second;
     }
-    
+
     public static <A, B> Pair<A, B> of(A x, B y) {
         return new Pair<>(x, y);
     }
