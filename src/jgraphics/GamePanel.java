@@ -6,7 +6,6 @@
 package jgraphics;
 
 import java.awt.datatransfer.DataFlavor;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
 import javax.activation.ActivationDataFlavor;
@@ -17,7 +16,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.showMessageDialog;
 import javax.swing.ListModel;
-import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import jsolitaire.Board;
@@ -37,8 +35,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private static final long serialVersionUID = 1L;
 
     private final int number;
-    private int time = 0;
-    private Timer timer;
     private final GameWindow parent;
     private jsolitaire.Board board = new Board();
 
@@ -330,8 +326,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation1.setAutoscrolls(false);
         foundation1.setDragEnabled(true);
         foundation1.setDropMode(javax.swing.DropMode.INSERT);
+        foundation1.setMaximumSize(new java.awt.Dimension(73, 97));
+        foundation1.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation1.setName("7"); // NOI18N
-        foundation1.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation1.setPreferredSize(new java.awt.Dimension(73, 97));
         foundation1.setVisibleRowCount(1);
         foundation1.setCellRenderer(new SimpleCardRenderer());
         jScrollPane8.setViewportView(foundation1);
@@ -346,8 +344,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setAutoscrolls(false);
         foundation2.setDragEnabled(true);
         foundation2.setDropMode(javax.swing.DropMode.INSERT);
+        foundation2.setMaximumSize(new java.awt.Dimension(73, 97));
+        foundation2.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation2.setName("8"); // NOI18N
-        foundation2.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation2.setPreferredSize(new java.awt.Dimension(73, 97));
         foundation2.setCellRenderer(new SimpleCardRenderer());
         jScrollPane9.setViewportView(foundation2);
 
@@ -361,8 +361,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3.setAutoscrolls(false);
         foundation3.setDragEnabled(true);
         foundation3.setDropMode(javax.swing.DropMode.INSERT);
+        foundation3.setMaximumSize(new java.awt.Dimension(73, 97));
+        foundation3.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation3.setName("9"); // NOI18N
-        foundation3.setPreferredSize(new java.awt.Dimension(90, 76));
+        foundation3.setPreferredSize(new java.awt.Dimension(73, 97));
         foundation3.setCellRenderer(new SimpleCardRenderer());
         jScrollPane10.setViewportView(foundation3);
 
@@ -376,10 +378,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation4.setAutoscrolls(false);
         foundation4.setDragEnabled(true);
         foundation4.setDropMode(javax.swing.DropMode.INSERT);
-        foundation4.setMaximumSize(new java.awt.Dimension(97, 76));
-        foundation4.setMinimumSize(new java.awt.Dimension(97, 76));
+        foundation4.setMaximumSize(new java.awt.Dimension(73, 97));
+        foundation4.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation4.setName("10"); // NOI18N
-        foundation4.setPreferredSize(new java.awt.Dimension(97, 76));
+        foundation4.setPreferredSize(new java.awt.Dimension(73, 97));
         foundation4.setCellRenderer(new SimpleCardRenderer());
         jScrollPane11.setViewportView(foundation4);
 
@@ -394,7 +396,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         waste.setDragEnabled(true);
         waste.setDropMode(javax.swing.DropMode.INSERT);
         waste.setName("11"); // NOI18N
-        waste.setPreferredSize(new java.awt.Dimension(90, 76));
+        waste.setPreferredSize(new java.awt.Dimension(73, 97));
         waste.setCellRenderer(new SimpleCardRenderer());
         waste.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -649,26 +651,21 @@ public class GamePanel extends javax.swing.JInternalFrame {
             tableau.getElementAt(tableau.getSize() - 1).setFaceUp(true);
         }
     }
+    
+    private void writeTime(int time){
+        int min = time / 60;
+        int sec = time % 60;
+        if (sec < 10) {
+            jLabel1.setText("Time: " + min + ":0" + sec);
+        } else {
+            jLabel1.setText("Time: " + min + ":" + sec);
+        }
+    }
 
     private void startGame(Board board) {
         this.board = board;
         jLabel1.setText("Time: 0:00");
-        if (timer != null) {
-            timer.stop();
-        }
-        timer = new Timer(1000, (ActionEvent a1) -> {
-            int min, sec;
-            time++;
-            min = time / 60;
-            sec = time % 60;
-            if (sec < 10) {
-                jLabel1.setText("Time: " + min + ":0" + sec);
-            } else {
-                jLabel1.setText("Time: " + min + ":" + sec);
-            }
-
-        });
-        timer.start();
+        board.startTimer();
 
         final ListModel<Card> stockModel = board.getListModel(Deck.STOCK, 0);
         Runnable updateStock = () -> {

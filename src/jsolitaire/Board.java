@@ -17,6 +17,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.TimerTask;
+import java.util.Timer;
 import javax.swing.ListModel;
 
 public class Board implements Serializable {
@@ -55,6 +57,8 @@ public class Board implements Serializable {
             Pair.of(Deck.STOCK, 0));
     private List<Move> hints = null;
     private int hintsIndex;
+    private Timer timer = null;
+    private int time = 0;
 
     public enum Deck {
         STOCK,
@@ -152,6 +156,47 @@ public class Board implements Serializable {
         }));
         hintsIndex = 0;
         return getHint();
+    }
+    
+    public void startTimer() {
+        TimerTask timerTask = new TimerTask(){
+
+            @Override
+            public void run() {
+                time++;
+                System.out.println(time);
+                maintainceTimer();
+                //Pripraveno pro volani funkce z GamePanel writeTime();  
+            }
+        };
+        
+        if (timer == null){
+            timer = new Timer();
+            timer.schedule(timerTask, 1000);
+        } else {
+            timer.cancel();
+            time = 0;
+            timer = new Timer();
+            timer.schedule(timerTask, 1000);
+        }
+
+    }
+    
+    private void maintainceTimer(){
+        TimerTask timerTask = new TimerTask(){
+
+            @Override
+            public void run() {
+                time++;
+                System.out.println(time);
+                maintainceTimer();
+                //Pripraveno pro volani funkce z GamePanel writeTime();  
+            }
+        };
+        
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(timerTask, 1000);
     }
 
     private boolean isValidMove(Move x) {
