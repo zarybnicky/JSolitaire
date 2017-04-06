@@ -174,17 +174,17 @@ public class Board implements Serializable {
             }
         };
 
-        if (timer == null) {
-            timer = new Timer();
-        } else {
+        if (timer != null) {
             timer.cancel();
         }
+        timer = new Timer();
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
 
     public void stopTimer() {
         if (timer != null) {
             timer.cancel();
+            timer = null;
         }
     }
 
@@ -242,6 +242,10 @@ public class Board implements Serializable {
         StackModel<Card> fromDeck = getDeckPair(move.getFromPair());
         StackModel<Card> toDeck = getDeckPair(move.getToPair());
 
+        if (move.didTurnCard()) {
+            toDeck.getElementAt(toDeck.getSize() - 1).setFaceUp(false);
+        }
+
         if (move.getFromDeck() == Deck.WASTE && move.getToDeck() == Deck.STOCK) {
             for (int i = 0; i <= move.getFromIndex(); i++) {
                 toDeck.push(fromDeck.pop());
@@ -255,6 +259,11 @@ public class Board implements Serializable {
         }
         for (int i = 0; i <= move.getFromIndex(); i++) {
             toDeck.push(stack.pop());
+        }
+
+        if (fromDeck.getSize() > 0 && !fromDeck.getElementAt(fromDeck.getSize() - 1).isFaceUp()) {
+            fromDeck.getElementAt(fromDeck.getSize() - 1).setFaceUp(true);
+            move.setTurnedCard(true);
         }
     }
 

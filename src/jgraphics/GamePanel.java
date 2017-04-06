@@ -747,7 +747,6 @@ class ListItemTransferHandler extends TransferHandler {
                 source.getModel().getSize() - indices[0] - 1));
 
         //Pri nacteni hry nebo priprave nove, kdyz je uz nejaka rozehrana se neobjevuji nektere karty. Upresneni nezobrazi se v jiz prazdnych polich
-        //Undo turn cardface
     }
 
     private Pair<Deck, Integer> indexToDeck(int i) {
