@@ -5,8 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
             <name>JSolitaire</name>
             <source-roots>
-                <root id="src.JSolitaire.dir" name="C:\Users\User\Desktop\Code\JSolitaire\|lib"/>
                 <root id="src.dir"/>
+                <root id="src.lib.dir"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

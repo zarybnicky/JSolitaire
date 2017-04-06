@@ -24,8 +24,8 @@ public class Card implements Serializable {
     private transient ImageIcon icon;
     private transient boolean greyedOut = false;
     
-    public static final ImageIcon BACK = new ImageIcon(loader.getResource("lib/BACK.gif"));
-    public static final ImageIcon MISSING = new ImageIcon(loader.getResource("lib/missing.gif"));
+    public static final ImageIcon BACK = new ImageIcon(loader.getResource("BACK.gif"));
+    public static final ImageIcon MISSING = new ImageIcon(loader.getResource("missing.gif"));
 
     public Card(Suit suit, Rank rank, boolean faceUp) {
         this.suit = suit;
@@ -33,9 +33,9 @@ public class Card implements Serializable {
         this.faceUp = faceUp;
 
         if (suit == null && rank == null){
-            icon = new ImageIcon(loader.getResource("lib/missing.gif"), "missing");
+            icon = new ImageIcon(loader.getResource("missing.gif"), "missing");
         }else{
-            icon = new ImageIcon(loader.getResource("lib/" + getIconName() + ".gif"), getIconName());
+            icon = new ImageIcon(loader.getResource(getIconName() + ".gif"), getIconName());
         }
     }
 
