@@ -130,7 +130,17 @@ public class GameWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_closeGameActionPerformed
 
     private void helpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpActionPerformed
-        showMessageDialog(this, "Dopln HELP!");
+        showMessageDialog(this, "Solitaire\n\n"
+                + "Main window buttons:\n"
+                + "Add game - Add new game window. (max. 4)\n"
+                + "Close games - Close all game windows and exit program.\n\n"
+                + "Game window buttons:\n"
+                + "New - Stars new game in window.\n"
+                + "Open - Loads saved game.\n"
+                + "Save - Saves current progress.\n"
+                + "Hint - Are you desperate? This is your rescue.\n"
+                + "Undo - Rollback of the last moven.\n"
+                + "Close - Ends current game.\n");
     }//GEN-LAST:event_helpActionPerformed
 
     public void rem(int i) {

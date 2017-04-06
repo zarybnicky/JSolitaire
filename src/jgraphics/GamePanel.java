@@ -513,15 +513,6 @@ public class GamePanel extends javax.swing.JInternalFrame {
             StackModel<Card> fromDeck = board.getListModel(x.getFromDeck(), x.getFromSlot());
             StackModel<Card> toDeck = board.getListModel(x.getToDeck(), x.getToSlot());
             
-            if (toDeck.getSize() == 0) {
-                //A co když to dáváme na prázdný deck???, nějaký šedý overlay na prázdný JList?
-                System.out.print(x.getFromDeck());
-                System.out.println(x.getFromSlot());
-                System.out.print(x.getToDeck());
-                System.out.println(x.getToSlot());
-                System.out.println(x.getFromIndex());
-            }
-            
             new Thread(() -> {
                 try {
                     boolean forgery = false;

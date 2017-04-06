@@ -16,23 +16,26 @@ public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static final ClassLoader loader = Card.class.getClassLoader();
+    
     private final Suit suit;
     private final Rank rank;
     private boolean faceUp;
     private transient ImageIcon icon;
     private transient boolean greyedOut = false;
     
-    public static final ImageIcon BACK = new ImageIcon(Card.class.getResource("/resources/BACK.gif"));
-    public static final ImageIcon MISSING = new ImageIcon(Card.class.getResource("/resources/missing.gif"));
+    public static final ImageIcon BACK = new ImageIcon(loader.getResource("lib/BACK.gif"));
+    public static final ImageIcon MISSING = new ImageIcon(loader.getResource("lib/missing.gif"));
 
     public Card(Suit suit, Rank rank, boolean faceUp) {
         this.suit = suit;
         this.rank = rank;
         this.faceUp = faceUp;
+
         if (suit == null && rank == null){
-            icon = new ImageIcon(Card.class.getResource("/resources/" + "missing" + ".gif"), "missing");
+            icon = new ImageIcon(loader.getResource("lib/missing.gif"), "missing");
         }else{
-            icon = new ImageIcon(Card.class.getResource("/resources/" + getIconName() + ".gif"), getIconName());
+            icon = new ImageIcon(loader.getResource("lib/" + getIconName() + ".gif"), getIconName());
         }
     }
 
