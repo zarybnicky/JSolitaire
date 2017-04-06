@@ -9,11 +9,10 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Observable;
-import java.util.Observer;
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
 
-public class Card extends Observable implements Serializable {
+public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,14 +61,10 @@ public class Card extends Observable implements Serializable {
 
     public void setFaceUp(boolean faceUp) {
         this.faceUp = faceUp;
-        System.out.println("updating?");
-        notifyObservers();
     }
 
     public void setGreyedOut(boolean greyedOut) {
         this.greyedOut = greyedOut;
-        System.out.println("updating?");
-        notifyObservers();
     }
 
     public boolean isAlternateColor(Card c) {

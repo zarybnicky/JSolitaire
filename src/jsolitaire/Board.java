@@ -133,7 +133,7 @@ public class Board implements Serializable {
         }
     }
 
-    public ListModel<Card> getListModel(Deck deck, int slot) {
+    public StackModel<Card> getListModel(Deck deck, int slot) {
         return getDeckInternal(deck, slot);
     }
 

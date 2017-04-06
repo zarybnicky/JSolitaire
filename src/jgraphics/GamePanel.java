@@ -508,29 +508,31 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private void hintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hintButtonActionPerformed
         Optional<Move> hint = board.getHint();
         hint.ifPresent(x -> {
-            System.out.print(x.getFromDeck());
-            System.out.println(x.getFromSlot());
-            System.out.print(x.getToDeck());
-            System.out.println(x.getToSlot());
-            System.out.println(x.getFromIndex());
-
-            ListModel<Card> fromDeck = board.getListModel(x.getFromDeck(), x.getFromSlot());
-            ListModel<Card> toDeck = board.getListModel(x.getToDeck(), x.getToSlot());
+            StackModel<Card> fromDeck = board.getListModel(x.getFromDeck(), x.getFromSlot());
+            StackModel<Card> toDeck = board.getListModel(x.getToDeck(), x.getToSlot());
             if (toDeck.getSize() == 0) {
                 //A co když to dáváme na prázdný deck???, nějaký šedý overlay na prázdný JList?
+                System.out.print(x.getFromDeck());
+                System.out.println(x.getFromSlot());
+                System.out.print(x.getToDeck());
+                System.out.println(x.getToSlot());
+                System.out.println(x.getFromIndex());
                 return;
             }
             Card fromCard = fromDeck.getElementAt(fromDeck.getSize() - x.getFromIndex() - 1);
             Card toCard = toDeck.getElementAt(toDeck.getSize() - 1);
             new Thread(() -> {
                 try {
-                    //nefunguje, zatím nevím proč
                     fromCard.setGreyedOut(true);
+                    fromDeck.refresh();
                     Thread.sleep(600);
                     fromCard.setGreyedOut(false);
+                    fromDeck.refresh();
                     toCard.setGreyedOut(true);
+                    toDeck.refresh();
                     Thread.sleep(600);
                     toCard.setGreyedOut(false);
+                    toDeck.refresh();
                 } catch (InterruptedException ex) {
                 }
             }).start();
@@ -572,47 +574,42 @@ public class GamePanel extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_stockMouseClicked
 
     private void tableau1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau1MouseClicked
-        onStackClick(Deck.TABLEAU, 0, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 0);
     }//GEN-LAST:event_tableau1MouseClicked
 
     private void tableau2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau2MouseClicked
-        onStackClick(Deck.TABLEAU, 1, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 1);
     }//GEN-LAST:event_tableau2MouseClicked
 
     private void tableau3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau3MouseClicked
-        onStackClick(Deck.TABLEAU, 2, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 2);
     }//GEN-LAST:event_tableau3MouseClicked
 
     private void tableau4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau4MouseClicked
-        onStackClick(Deck.TABLEAU, 3, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 3);
     }//GEN-LAST:event_tableau4MouseClicked
 
     private void tableau5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau5MouseClicked
-        onStackClick(Deck.TABLEAU, 4, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 4);
     }//GEN-LAST:event_tableau5MouseClicked
 
     private void tableau6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau6MouseClicked
-        onStackClick(Deck.TABLEAU, 5, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 5);
     }//GEN-LAST:event_tableau6MouseClicked
 
     private void tableau7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau7MouseClicked
-        onStackClick(Deck.TABLEAU, 6, evt.getClickCount());
+        onStackClick(Deck.TABLEAU, 6);
     }//GEN-LAST:event_tableau7MouseClicked
 
     private void wasteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wasteMouseClicked
-        onStackClick(Deck.WASTE, 0, evt.getClickCount());
+        onStackClick(Deck.WASTE, 0);
     }//GEN-LAST:event_wasteMouseClicked
 
-    private void onStackClick(Deck deck, int slot, int clicks) {
-        if (clicks == 2) {
-            for (int i = 0; i < 4; i++) {
-                if (board.tryToMove(new Move(deck, slot, 0, Deck.FOUNDATION, i))) {
-                    break;
-                }
+    private void onStackClick(Deck deck, int slot) {
+        for (int i = 0; i < 4; i++) {
+            if (board.tryToMove(new Move(deck, slot, 0, Deck.FOUNDATION, i))) {
+                break;
             }
-        } else {
-            StackModel<Card> tableau = (StackModel<Card>) board.getListModel(deck, slot);
-            tableau.getElementAt(tableau.getSize() - 1).setFaceUp(true);
         }
     }
 
@@ -732,7 +729,7 @@ class ListItemTransferHandler extends TransferHandler {
 
     @Override
     public int getSourceActions(JComponent c) {
-        return TransferHandler.MOVE; //TransferHandler.COPY_OR_MOVE;
+        return TransferHandler.MOVE;
     }
 
     @Override
@@ -745,8 +742,6 @@ class ListItemTransferHandler extends TransferHandler {
                 indexToDeck(Integer.parseInt(source.getName())),
                 indexToDeck(Integer.parseInt(info.getComponent().getName())),
                 source.getModel().getSize() - indices[0] - 1));
-
-        //Pri nacteni hry nebo priprave nove, kdyz je uz nejaka rozehrana se neobjevuji nektere karty. Upresneni nezobrazi se v jiz prazdnych polich
     }
 
     private Pair<Deck, Integer> indexToDeck(int i) {
