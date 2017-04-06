@@ -10,6 +10,8 @@ import java.awt.event.KeyEvent;
 import java.util.Optional;
 import javax.activation.ActivationDataFlavor;
 import javax.activation.DataHandler;
+import javax.swing.GrayFilter;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
@@ -510,6 +512,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         hint.ifPresent(x -> {
             StackModel<Card> fromDeck = board.getListModel(x.getFromDeck(), x.getFromSlot());
             StackModel<Card> toDeck = board.getListModel(x.getToDeck(), x.getToSlot());
+            
             if (toDeck.getSize() == 0) {
                 //A co když to dáváme na prázdný deck???, nějaký šedý overlay na prázdný JList?
                 System.out.print(x.getFromDeck());
@@ -517,12 +520,21 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 System.out.print(x.getToDeck());
                 System.out.println(x.getToSlot());
                 System.out.println(x.getFromIndex());
-                return;
             }
-            Card fromCard = fromDeck.getElementAt(fromDeck.getSize() - x.getFromIndex() - 1);
-            Card toCard = toDeck.getElementAt(toDeck.getSize() - 1);
+            
             new Thread(() -> {
                 try {
+                    boolean forgery = false;
+                    Card fromCard = fromDeck.getElementAt(fromDeck.getSize() - x.getFromIndex() - 1);
+                    
+                    if (toDeck.getSize() == 0) {
+                        toDeck.add(new Card(null, null, true));
+                        toDeck.refresh();
+                        forgery = true;
+                    }
+                    
+                    Card toCard = toDeck.getElementAt(toDeck.getSize() - 1);
+                    
                     fromCard.setGreyedOut(true);
                     fromDeck.refresh();
                     Thread.sleep(600);
@@ -533,6 +545,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
                     Thread.sleep(600);
                     toCard.setGreyedOut(false);
                     toDeck.refresh();
+                    
+                    if (forgery == true){
+                        toDeck.pop();
+                    }
                 } catch (InterruptedException ex) {
                 }
             }).start();
@@ -628,7 +644,13 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
         final ListModel<Card> stockModel = board.getListModel(Deck.STOCK, 0);
         Runnable updateStock = () -> {
-            stockLabel.setIcon((stockModel.getSize() > 0) ? Card.BACK : null);
+            if (stockModel.getSize() == 0) {
+                stockLabel.setIcon(null);
+            } else if (stockModel.getElementAt(stockModel.getSize() - 1).isGreyedOut()){
+                stockLabel.setIcon(new ImageIcon(GrayFilter.createDisabledImage(Card.BACK.getImage())));
+            } else {
+                stockLabel.setIcon(Card.BACK);
+            }
         };
         stockModel.addListDataListener(new SimpleListDataListener(updateStock));
         updateStock.run();

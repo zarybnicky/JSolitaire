@@ -29,7 +29,11 @@ public class Card implements Serializable {
         this.suit = suit;
         this.rank = rank;
         this.faceUp = faceUp;
-        icon = new ImageIcon(Card.class.getResource("/resources/" + getIconName() + ".gif"), getIconName());
+        if (suit == null && rank == null){
+            icon = new ImageIcon(Card.class.getResource("/resources/" + "missing" + ".gif"), "missing");
+        }else{
+            icon = new ImageIcon(Card.class.getResource("/resources/" + getIconName() + ".gif"), getIconName());
+        }
     }
 
     public Suit getSuit() {
