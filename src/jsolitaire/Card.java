@@ -1,6 +1,11 @@
 /*
- * License
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Class represents one card.
  */
+
 package jsolitaire;
 
 import java.awt.MediaTracker;
@@ -18,24 +23,27 @@ public class Card implements Serializable {
 
     private static final ClassLoader loader = Card.class.getClassLoader();
     
+    // Card attributes
     private final Suit suit;
     private final Rank rank;
     private boolean faceUp;
     private transient ImageIcon icon;
     private transient boolean greyedOut = false;
     
-    public static final ImageIcon BACK = new ImageIcon(loader.getResource("BACK.gif"));
-    public static final ImageIcon MISSING = new ImageIcon(loader.getResource("missing.gif"));
+    // Image of card
+    public static final ImageIcon BACK = new ImageIcon(loader.getResource("cards/BACK.gif"));
+    public static final ImageIcon MISSING = new ImageIcon(loader.getResource("cards/missing.gif"));
 
+    // Constructor
     public Card(Suit suit, Rank rank, boolean faceUp) {
         this.suit = suit;
         this.rank = rank;
         this.faceUp = faceUp;
 
         if (suit == null && rank == null){
-            icon = new ImageIcon(loader.getResource("missing.gif"), "missing");
+            icon = new ImageIcon(loader.getResource("cards/missing.gif"), "missing");
         }else{
-            icon = new ImageIcon(loader.getResource(getIconName() + ".gif"), getIconName());
+            icon = new ImageIcon(loader.getResource("cards/" + getIconName() + ".gif"), getIconName());
         }
     }
 
@@ -58,6 +66,7 @@ public class Card implements Serializable {
         return i;
     }
 
+    // Methods for obtaining attributes data
     public boolean isFaceUp() {
         return faceUp;
     }
@@ -74,6 +83,9 @@ public class Card implements Serializable {
         this.greyedOut = greyedOut;
     }
 
+    /*
+    * Card matching support methods
+    */
     public boolean isAlternateColor(Card c) {
         boolean red = c.getSuit() == Suit.HEARTS || c.getSuit() == Suit.DIAMONDS;
         return (suit == Suit.HEARTS || suit == Suit.DIAMONDS) ? !red : red;
@@ -83,6 +95,10 @@ public class Card implements Serializable {
         return rank.ordinal() + 1 == c.getRank().ordinal();
     }
 
+    /*
+    * Turns suit and rank enum identifiers to string.
+    * @return String of card identifier.
+    */
     public String getIconName() {
         String str = String.valueOf(rank);
         switch (suit) {
@@ -98,6 +114,9 @@ public class Card implements Serializable {
         return null;
     }
 
+    /*
+    * Enumerations of card parameters
+    */
     public enum Suit {
         HEARTS,
         DIAMONDS,
@@ -121,6 +140,9 @@ public class Card implements Serializable {
         KING
     }
 
+    /*
+    * Card matching support methods
+    */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Card && suit == ((Card) obj).getSuit() && rank == ((Card) obj).getRank();

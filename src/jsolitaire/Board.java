@@ -1,6 +1,11 @@
 /*
- * License
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Modul implements game methods and structures.
  */
+
 package jsolitaire;
 
 import java.io.File;
@@ -20,12 +25,14 @@ import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Consumer;
-import javax.swing.ListModel;
 
 public class Board implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /* 
+    * Game decks setup
+    */
     private final StackModel<Move> history = new StackModel<>();
     private final StackModel<Card> stock = new StackModel<>();
     private final StackModel<Card> waste = new StackModel<>();
@@ -71,6 +78,11 @@ public class Board implements Serializable {
         TABLEAU
     }
 
+    /*
+    * Serialization of class for saving a game. 
+    * @param Output file.
+    * @return Error or NULL.
+    */
     public Optional<String> serialize(File f) {
         try (FileOutputStream fileOut = new FileOutputStream(f);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
@@ -81,6 +93,11 @@ public class Board implements Serializable {
         return Optional.empty();
     }
 
+    /*
+    * Deserialization of class for loading a game. 
+    * @param Input file.
+    * @return Board of loaded game or error.
+    */
     public static Either<String, Board> deserialize(File f) {
         try (FileInputStream fileIn = new FileInputStream(f);
                 ObjectInputStream in = new ObjectInputStream(fileIn)) {
@@ -90,13 +107,18 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * The method removes old and prepares new game. 
+    */
     public void resetGame() {
+        // Old game removing
         history.clear();
         stock.clear();
         waste.clear();
         foundation.forEach(Collection::clear);
         tableau.forEach(Collection::clear);
 
+        // New game preparation
         List<Card> deck = getShuffledDeck();
         for (int i = 0, j = 0, k = 1; i < 52; i++) {
             if (k < 8) {
@@ -113,6 +135,11 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * Method is trying po
+    * @param Move to perform.
+    * @return Status of attempt.
+    */
     public boolean tryToMove(Move move) {
         if (!isValidMove(move)) {
             return false;
@@ -120,12 +147,17 @@ public class Board implements Serializable {
         hints = null;
         performMove(move);
         history.push(move);
+        
         if (stock.isEmpty() && waste.isEmpty() && tableau.stream().allMatch(StackModel::isEmpty)) {
             onWin.run();
         }
+        
         return true;
     }
 
+    /*
+    * Undo performed moves.
+    */
     public void goBack() {
         hints = null;
         if (!history.isEmpty()) {
@@ -133,10 +165,20 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * Method is calling 
+    * @param Type of deck.
+    * @param Index of deck.
+    * @return Selected deck.
+    */
     public StackModel<Card> getListModel(Deck deck, int slot) {
         return getDeckInternal(deck, slot);
     }
 
+    /*
+    * Generates possible moves.
+    * @return Possible moves.
+    */
     public Optional<Move> getHint() {
         if (hints != null) {
             if (hints.isEmpty()) {
@@ -161,10 +203,18 @@ public class Board implements Serializable {
         return getHint();
     }
 
+    /*
+    * The method setups and starts timer.
+    * @param Function to perform.
+    */
     public void setOnWin(Runnable fn) {
         this.onWin = fn;
     }
 
+    /*
+    * The method setups and starts timer.
+    * @param TODO
+    */
     public void startTimer(Consumer<Integer> fn) {
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -181,6 +231,9 @@ public class Board implements Serializable {
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
 
+    /*
+    * It stops the timer running.
+    */
     public void stopTimer() {
         if (timer != null) {
             timer.cancel();
@@ -188,10 +241,19 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * Move validity check before perform,
+    * @return Time counted by timer.
+    */
     public int getTime() {
         return time;
     }
 
+    /*
+    * Move validity check before perform,
+    * @param Move to check.
+    * @return Validity status.
+    */
     private boolean isValidMove(Move x) {
         Card from = peekCard(x.getFromPair(), x.getFromIndex());
         Card to = peekCard(x.getToPair(), 0);
@@ -226,18 +288,29 @@ public class Board implements Serializable {
                 return from.isAlternateColor(to) && from.precedes(to);
         }
     }
-
+    
+    /*
+    * The method generates and shuffles the cards.
+    * @return Shuffled deck.
+    */
     private List<Card> getShuffledDeck() {
         List<Card> deck = new ArrayList<>();
         Card.Suit[] suits = Card.Suit.values();
         Card.Rank[] ranks = Card.Rank.values();
+        
+        // Cards generator
         for (int i = 0; i < 52; i++) {
             deck.add(new Card(suits[i / 13], ranks[i % 13], false));
         }
+        
         Collections.shuffle(deck);
         return deck;
     }
 
+    /*
+    * The method performing transfer of cards between decks.
+    * @param Move to perform. Must be validated before call.
+    */
     private void performMove(Move move) {
         StackModel<Card> fromDeck = getDeckPair(move.getFromPair());
         StackModel<Card> toDeck = getDeckPair(move.getToPair());
@@ -267,6 +340,12 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * The method performing transfer of cards between decks.
+    * @param Pair of deck type and deck index. 
+    * @param Position of card.
+    * @return Selected cards.
+    */
     private Card peekCard(Pair<Deck, Integer> deck, int num) {
         StackModel<Card> x = getDeckPair(deck);
         try {
@@ -276,10 +355,21 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * The method disassembles pair and aply elements to get specific deck.
+    * @param Pair of deck type and deck index. 
+    * @return Selected deck.
+    */
     private StackModel<Card> getDeckPair(Pair<Deck, Integer> x) {
         return getDeckInternal(x.getFirst(), x.getSecond());
     }
 
+    /*
+    * Selecting of a specified deck.
+    * @param Type of deck.
+    * @param Index of deck.
+    * @return Selected deck.
+    */
     private StackModel<Card> getDeckInternal(Deck deck, int slot) {
         switch (deck) {
             case STOCK:
@@ -293,6 +383,11 @@ public class Board implements Serializable {
         }
     }
 
+    /*
+    * The method setups and starts timer.
+    * @param Pair of deck type and deck index. 
+    * @return Size of deck.
+    */
     private int getUsableSize(Pair<Deck, Integer> x) {
         switch (x.getFirst()) {
             case FOUNDATION:

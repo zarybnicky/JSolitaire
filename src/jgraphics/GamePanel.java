@@ -1,8 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Representation of internal panel.
  */
+
 package jgraphics;
 
 import java.awt.datatransfer.DataFlavor;
@@ -27,10 +30,6 @@ import jsolitaire.Move;
 import jsolitaire.Pair;
 import jsolitaire.StackModel;
 
-/**
- *
- * @author User
- */
 public class GamePanel extends javax.swing.JInternalFrame {
 
     private static final long serialVersionUID = 1L;
@@ -53,6 +52,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
         ((BasicInternalFrameUI) super.getUI()).setNorthPane(null);
 
+        // Keyboard shortcuts
         newButton.setMnemonic(KeyEvent.VK_N);
         openButton.setMnemonic(KeyEvent.VK_O);
         saveButton.setMnemonic(KeyEvent.VK_S);
@@ -502,6 +502,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+    * Button performations
+    */
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         parent.rem(number);
         dispose();
@@ -572,6 +575,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    /*
+    *Mouse click performations
+    */
     private void stockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stockMouseClicked
         if (board.getListModel(Deck.STOCK, 0).getSize() == 0) {
             board.tryToMove(new Move(Deck.WASTE, 0, board.getListModel(Deck.WASTE, 0).getSize() - 1, Deck.STOCK, 0));
@@ -643,6 +649,8 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 stockLabel.setIcon(Card.BACK);
             }
         };
+      
+        // Setup of deck behavior
         stockModel.addListDataListener(new SimpleListDataListener(updateStock));
         updateStock.run();
 
@@ -713,6 +721,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 }
 
+// Handler of Drag&Drop
 class ListItemTransferHandler extends TransferHandler {
 
     private static final long serialVersionUID = 1L;

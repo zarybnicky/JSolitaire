@@ -1,6 +1,11 @@
 /*
- * 
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Card renderer for foundations.
  */
+
 package jgraphics;
 
 import java.awt.Component;
@@ -20,6 +25,7 @@ public class SimpleCardRenderer extends JLabel implements ListCellRenderer<Card>
     public Component getListCellRendererComponent(JList<? extends Card> list, Card card, int index,
             boolean isSelected, boolean cellHasFocus) {
         
+        // Card image to list setup
         setIcon(card.getIcon());
         if (index != list.getModel().getSize() - 1) {
             setIcon(new ImageIcon(createImage(new FilteredImageSource(

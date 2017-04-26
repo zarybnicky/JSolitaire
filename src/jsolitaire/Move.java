@@ -1,3 +1,11 @@
+/*
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Class represents move between decks.
+ */
+
 package jsolitaire;
 
 import java.io.Serializable;

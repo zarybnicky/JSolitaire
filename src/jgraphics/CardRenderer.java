@@ -1,6 +1,11 @@
 /*
- * 
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Card renderer for tableaus.
  */
+
 package jgraphics;
 
 import java.awt.Component;
@@ -21,12 +26,14 @@ public class CardRenderer extends JLabel implements ListCellRenderer<Card> {
     public Component getListCellRendererComponent(JList<? extends Card> list, Card card, int index,
             boolean isSelected, boolean cellHasFocus) {
         
+        // Padding setup for variable trimming.
         int padding = this.base;
         int size = list.getModel().getSize();
         if (size - 7 > 0){
             padding = (list.getPreferredSize().height - 57) / size;
         }
         
+        // Card image to list setup
         setIcon(card.getIcon());
         if (index != list.getModel().getSize() - 1) {
             setIcon(new ImageIcon(createImage(new FilteredImageSource(

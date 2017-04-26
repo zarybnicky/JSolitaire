@@ -1,18 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * @authors: Jakub Zarybnický (xzaryb00)
+ *           Jiří Záleský (xzales12)
+ * VUTBR BIT 2, 2016/17
+ *
+ * Description: Representation of main window.
  */
+
 package jgraphics;
 
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import static javax.swing.JOptionPane.showMessageDialog;
 
-/**
- *
- * @author User
- */
 public class GameWindow extends javax.swing.JFrame {
 
     private static int count = 0;
@@ -105,7 +104,9 @@ public class GameWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /*
+    * New game panel setup 
+    */
     private void addGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGameActionPerformed
         if (count != 0) {
             this.setSize(1275, 790);
