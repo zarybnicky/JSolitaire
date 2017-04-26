@@ -12,6 +12,12 @@ import java.io.Serializable;
 import java.util.Observable;
 import jsolitaire.Board.Deck;
 
+/**
+ * Represents a move of a stack of cards between two decks.
+ * 
+ * @author Jakub Zarybnický (xzaryb00)
+ * @author Jiří Záleský (xzales12)
+ */
 public class Move extends Observable implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -21,12 +27,13 @@ public class Move extends Observable implements Serializable {
     private final int fromIndex;
     private boolean turnedCard = false;
 
-    public Move(Deck fromDeck, int fromSlot, int fromIndex, Deck toDeck, int toSlot) {
-        this.from = Pair.of(fromDeck, fromSlot);
-        this.to = Pair.of(toDeck, toSlot);
-        this.fromIndex = fromIndex;
-    }
-
+    /**
+     * Constructs a move moving <code>fromIndex</code> cards from <code>from</code> to <code>to</code>
+     * 
+     * @param from 'From' deck identifier
+     * @param to 'To' deck identifier
+     * @param fromIndex Number of cards to move
+     */
     public Move(Pair<Deck, Integer> from, Pair<Deck, Integer> to, int fromIndex) {
         this.from = from;
         this.to = to;
@@ -39,6 +46,8 @@ public class Move extends Observable implements Serializable {
         this.fromIndex = fromIndex;
         this.turnedCard = turnedCard;
     }
+    
+    /* Getters and setters */
 
     public Deck getFromDeck() {
         return from.getFirst();

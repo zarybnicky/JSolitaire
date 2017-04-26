@@ -1,11 +1,3 @@
-/*
- * @authors: Jakub Zarybnický (xzaryb00)
- *           Jiří Záleský (xzales12)
- * VUTBR BIT 2, 2016/17
- *
- * Description: Class represents one card.
- */
-
 package jsolitaire;
 
 import java.awt.MediaTracker;
@@ -13,39 +5,52 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Observable;
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
 
+/**
+ * Represents a single card
+ *
+ * @author Jakub Zarybnický (xzaryb00)
+ * @author Jiří Záleský (xzales12)
+ */
 public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final ClassLoader loader = Card.class.getClassLoader();
-    
+    private static final ClassLoader LOADER = Card.class.getClassLoader();
+
     // Card attributes
     private final Suit suit;
     private final Rank rank;
     private boolean faceUp;
     private transient ImageIcon icon;
     private transient boolean greyedOut = false;
-    
-    // Image of card
-    public static final ImageIcon BACK = new ImageIcon(loader.getResource("cards/BACK.gif"));
-    public static final ImageIcon MISSING = new ImageIcon(loader.getResource("cards/missing.gif"));
 
-    // Constructor
+    // Image of card
+    public static final ImageIcon BACK = new ImageIcon(LOADER.getResource("cards/BACK.gif"));
+    public static final ImageIcon MISSING = new ImageIcon(LOADER.getResource("cards/missing.gif"));
+
+    /**
+     * Constructs a Card
+     *
+     * @param suit The card's suit
+     * @param rank The card's rank
+     * @param faceUp Whether the card is face up
+     */
     public Card(Suit suit, Rank rank, boolean faceUp) {
         this.suit = suit;
         this.rank = rank;
         this.faceUp = faceUp;
 
-        if (suit == null && rank == null){
-            icon = new ImageIcon(loader.getResource("cards/missing.gif"), "missing");
-        }else{
-            icon = new ImageIcon(loader.getResource("cards/" + getIconName() + ".gif"), getIconName());
+        if (suit == null && rank == null) {
+            icon = new ImageIcon(LOADER.getResource("cards/missing.gif"), "missing");
+        } else {
+            icon = new ImageIcon(LOADER.getResource("cards/" + getIconName() + ".gif"), getIconName());
         }
     }
+
+    /* Getters and setters */
 
     public Suit getSuit() {
         return suit;
@@ -66,11 +71,10 @@ public class Card implements Serializable {
         return i;
     }
 
-    // Methods for obtaining attributes data
     public boolean isFaceUp() {
         return faceUp;
     }
-    
+
     public boolean isGreyedOut() {
         return greyedOut;
     }
@@ -83,22 +87,32 @@ public class Card implements Serializable {
         this.greyedOut = greyedOut;
     }
 
-    /*
-    * Card matching support methods
-    */
+    /**
+     * Is <code>c</code> the opposite color from this card?
+     *
+     * @param c The card to match against
+     * @return Do the cards have opposite colors
+     */
     public boolean isAlternateColor(Card c) {
         boolean red = c.getSuit() == Suit.HEARTS || c.getSuit() == Suit.DIAMONDS;
         return (suit == Suit.HEARTS || suit == Suit.DIAMONDS) ? !red : red;
     }
 
+    /**
+     * Does this card precede <code>c</code>?
+     *
+     * @param c The card to match against
+     * @return Does this card precede <code>c</code>?
+     */
     public boolean precedes(Card c) {
         return rank.ordinal() + 1 == c.getRank().ordinal();
     }
 
-    /*
-    * Turns suit and rank enum identifiers to string.
-    * @return String of card identifier.
-    */
+    /**
+     * Returns this card's icon's name.
+     *
+     * @return String identifier of the card's icon.
+     */
     public String getIconName() {
         String str = String.valueOf(rank);
         switch (suit) {
@@ -114,9 +128,9 @@ public class Card implements Serializable {
         return null;
     }
 
-    /*
-    * Enumerations of card parameters
-    */
+    /**
+     * A card's suit
+     */
     public enum Suit {
         HEARTS,
         DIAMONDS,
@@ -124,6 +138,9 @@ public class Card implements Serializable {
         CLUBS;
     }
 
+    /**
+     * A card's rank
+     */
     public enum Rank {
         ACE,
         TWO,
@@ -140,9 +157,6 @@ public class Card implements Serializable {
         KING
     }
 
-    /*
-    * Card matching support methods
-    */
     @Override
     public boolean equals(Object obj) {
         return obj instanceof Card && suit == ((Card) obj).getSuit() && rank == ((Card) obj).getRank();

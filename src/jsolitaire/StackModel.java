@@ -1,11 +1,3 @@
-/*
- * @authors: Jakub Zarybnický (xzaryb00)
- *           Jiří Záleský (xzales12)
- * VUTBR BIT 2, 2016/17
- *
- * Description: Implementation of specialized stack.
- */
-
 package jsolitaire;
 
 import java.util.Arrays;
@@ -15,15 +7,18 @@ import javax.swing.event.EventListenerList;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+/**
+ * A Stack, implementing ListModel (displayable in a JList).
+ *
+ * @author Jakub Zarybnický (xzaryb00)
+ * @author Jiří Záleský (xzales12)
+ */
 public class StackModel<T> extends Stack<T> implements ListModel<T> {
 
     private static final long serialVersionUID = 1L;
 
     private final EventListenerList listenerList = new EventListenerList();
 
-    /*
-    * Reimplementation of stack
-    */
     @Override
     public int getSize() {
         return size();
@@ -78,9 +73,6 @@ public class StackModel<T> extends Stack<T> implements ListModel<T> {
         listenerList.remove(ListDataListener.class, l);
     }
 
-    /*
-    * TODO
-    */
     protected void fireContentsChanged(Object source, int index0, int index1) {
         ListDataEvent e = new ListDataEvent(source, ListDataEvent.CONTENTS_CHANGED, index0, index1);
         Arrays.asList(listenerList.getListeners(ListDataListener.class))

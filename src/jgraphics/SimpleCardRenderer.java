@@ -1,11 +1,3 @@
-/*
- * @authors: Jakub Zarybnický (xzaryb00)
- *           Jiří Záleský (xzales12)
- * VUTBR BIT 2, 2016/17
- *
- * Description: Card renderer for foundations.
- */
-
 package jgraphics;
 
 import java.awt.Component;
@@ -17,6 +9,12 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import jsolitaire.Card;
 
+/**
+ * Renders cards in the foundation
+ *
+ * @author Jakub Zarybnický (xzaryb00)
+ * @author Jiří Záleský (xzales12).
+ */
 public class SimpleCardRenderer extends JLabel implements ListCellRenderer<Card> {
 
     private static final long serialVersionUID = 1L;
