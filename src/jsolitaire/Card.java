@@ -18,8 +18,6 @@ public class Card implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final ClassLoader LOADER = Card.class.getClassLoader();
-
     // Card attributes
     private final Suit suit;
     private final Rank rank;
@@ -28,8 +26,8 @@ public class Card implements Serializable {
     private transient boolean greyedOut = false;
 
     // Image of card
-    public static final ImageIcon BACK = new ImageIcon(LOADER.getResource("cards/BACK.gif"));
-    public static final ImageIcon MISSING = new ImageIcon(LOADER.getResource("cards/missing.gif"));
+    public static final ImageIcon BACK = new ImageIcon(Card.class.getResource("cards/BACK.gif"));
+    public static final ImageIcon MISSING = new ImageIcon(Card.class.getResource("cards/missing.gif"));
 
     /**
      * Constructs a Card
@@ -44,9 +42,9 @@ public class Card implements Serializable {
         this.faceUp = faceUp;
 
         if (suit == null && rank == null) {
-            icon = new ImageIcon(LOADER.getResource("cards/missing.gif"), "missing");
+            icon = new ImageIcon(Card.class.getResource("cards/missing.gif"), "missing");
         } else {
-            icon = new ImageIcon(LOADER.getResource("cards/" + getIconName() + ".gif"), getIconName());
+            icon = new ImageIcon(Card.class.getResource("cards/" + getIconName() + ".gif"), getIconName());
         }
     }
 
@@ -172,6 +170,6 @@ public class Card implements Serializable {
 
     private void readObject(final ObjectInputStream s) throws ClassNotFoundException, IOException {
         s.defaultReadObject();
-        this.icon = new ImageIcon(LOADER.getResource("cards/" + getIconName() + ".gif"), getIconName());
+        this.icon = new ImageIcon(Card.class.getResource("cards/" + getIconName() + ".gif"), getIconName());
     }
 }
