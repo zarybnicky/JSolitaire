@@ -161,6 +161,9 @@ public class GameWindow extends javax.swing.JFrame {
     public void rem(int i) {
         frames[i] = null;
         count--;
+        if (count == 1) {
+            this.setSize(645, 430);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

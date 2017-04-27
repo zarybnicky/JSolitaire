@@ -194,7 +194,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau7.setCellRenderer(new CardRenderer());
         tableau7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau7MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tableau7);
@@ -213,7 +213,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau6.setCellRenderer(new CardRenderer());
         tableau6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau6MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tableau6);
@@ -232,7 +232,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau1.setCellRenderer(new CardRenderer());
         tableau1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau1MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane3.setViewportView(tableau1);
@@ -251,7 +251,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau2.setCellRenderer(new CardRenderer());
         tableau2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau2MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane4.setViewportView(tableau2);
@@ -270,7 +270,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau5.setCellRenderer(new CardRenderer());
         tableau5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau5MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane5.setViewportView(tableau5);
@@ -289,7 +289,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau3.setCellRenderer(new CardRenderer());
         tableau3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau3MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane6.setViewportView(tableau3);
@@ -308,7 +308,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         tableau4.setCellRenderer(new CardRenderer());
         tableau4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableau4MouseClicked(evt);
+                tableauMouseClicked(evt);
             }
         });
         jScrollPane7.setViewportView(tableau4);
@@ -615,63 +615,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
      *
      * @param evt The event created by the deck.
      */
-    private void tableau1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau1MouseClicked
-        onStackClick(Deck.TABLEAU, 0);
-    }//GEN-LAST:event_tableau1MouseClicked
-
-    /**
-     * Action performed when a tableau deck is clicked.
-     *
-     * @param evt The event created by the deck.
-     */
-    private void tableau2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau2MouseClicked
-        onStackClick(Deck.TABLEAU, 1);
-    }//GEN-LAST:event_tableau2MouseClicked
-
-    /**
-     * Action performed when a tableau deck is clicked.
-     *
-     * @param evt The event created by the deck.
-     */
-    private void tableau3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau3MouseClicked
-        onStackClick(Deck.TABLEAU, 2);
-    }//GEN-LAST:event_tableau3MouseClicked
-
-    /**
-     * Action performed when a tableau deck is clicked.
-     *
-     * @param evt The event created by the deck.
-     */
-    private void tableau4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau4MouseClicked
-        onStackClick(Deck.TABLEAU, 3);
-    }//GEN-LAST:event_tableau4MouseClicked
-
-    /**
-     * Action performed when a tableau deck is clicked.
-     *
-     * @param evt The event created by the deck.
-     */
-    private void tableau5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau5MouseClicked
-        onStackClick(Deck.TABLEAU, 4);
-    }//GEN-LAST:event_tableau5MouseClicked
-
-    /**
-     * Action performed when a tableau deck is clicked.
-     *
-     * @param evt The event created by the deck.
-     */
-    private void tableau6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau6MouseClicked
-        onStackClick(Deck.TABLEAU, 5);
-    }//GEN-LAST:event_tableau6MouseClicked
-
-    /**
-     * Action performed when a tableau deck is clicked.
-     *
-     * @param evt The event created by the deck.
-     */
-    private void tableau7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableau7MouseClicked
-        onStackClick(Deck.TABLEAU, 6);
-    }//GEN-LAST:event_tableau7MouseClicked
+    private void tableauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableauMouseClicked
+        onStackClick(Deck.TABLEAU, Integer.parseInt(evt.getComponent().getName()));
+    }//GEN-LAST:event_tableauMouseClicked
 
     /**
      * Action performed when the waste deck is clicked.
