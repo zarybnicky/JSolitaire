@@ -172,6 +172,6 @@ public class Card implements Serializable {
 
     private void readObject(final ObjectInputStream s) throws ClassNotFoundException, IOException {
         s.defaultReadObject();
-        this.icon = new ImageIcon(Card.class.getResource("/resources/" + getIconName() + ".gif"), getIconName());
+        this.icon = new ImageIcon(LOADER.getResource("cards/" + getIconName() + ".gif"), getIconName());
     }
 }
