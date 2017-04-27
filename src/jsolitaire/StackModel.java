@@ -10,6 +10,7 @@ import javax.swing.event.ListDataListener;
 /**
  * A Stack, implementing ListModel (displayable in a JList).
  *
+ * @param <T> This container's child element type
  * @author Jakub Zarybnický (xzaryb00)
  * @author Jiří Záleský (xzales12)
  */

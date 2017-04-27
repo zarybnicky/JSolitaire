@@ -602,7 +602,7 @@
             <Property name="visibleRowCount" type="int" value="1"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation1.setCellRenderer(new SimpleCardRenderer());"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation1.setCellRenderer(new jgraphics.SingleCardRenderer());"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Card&gt;"/>
           </AuxValues>
         </Component>
@@ -649,7 +649,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation2.setCellRenderer(new SimpleCardRenderer());"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation2.setCellRenderer(new jgraphics.SingleCardRenderer());"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Card&gt;"/>
           </AuxValues>
         </Component>
@@ -696,7 +696,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation3.setCellRenderer(new SimpleCardRenderer());"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation3.setCellRenderer(new jgraphics.SingleCardRenderer());"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Card&gt;"/>
           </AuxValues>
         </Component>
@@ -743,7 +743,7 @@
             </Property>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation4.setCellRenderer(new SimpleCardRenderer());"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="foundation4.setCellRenderer(new jgraphics.SingleCardRenderer());"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Card&gt;"/>
           </AuxValues>
         </Component>
@@ -787,7 +787,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="wasteMouseClicked"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="waste.setCellRenderer(new SimpleCardRenderer());"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="waste.setCellRenderer(new jgraphics.SingleCardRenderer());"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Card&gt;"/>
           </AuxValues>
         </Component>

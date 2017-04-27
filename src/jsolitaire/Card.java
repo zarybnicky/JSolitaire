@@ -4,6 +4,9 @@ import java.awt.MediaTracker;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import javax.swing.GrayFilter;
 import javax.swing.ImageIcon;
@@ -25,8 +28,14 @@ public class Card implements Serializable {
     private transient ImageIcon icon;
     private transient boolean greyedOut = false;
 
-    // Image of card
+    /**
+     * The back side of a card
+     */
     public static final ImageIcon BACK = new ImageIcon(Card.class.getResource("cards/BACK.gif"));
+    
+    /**
+     * An icon to display if a card icon is missing (or is null).
+     */
     public static final ImageIcon MISSING = new ImageIcon(Card.class.getResource("cards/missing.gif"));
 
     /**
@@ -48,16 +57,48 @@ public class Card implements Serializable {
         }
     }
 
-    /* Getters and setters */
+    /**
+     * Creates a shuffled deck
+     *
+     * @return A shuffled deck
+     */
+    public static List<Card> getShuffledDeck() {
+        List<Card> deck = new ArrayList<>();
+        Card.Suit[] suits = Card.Suit.values();
+        Card.Rank[] ranks = Card.Rank.values();
 
+        // Cards generator
+        for (int i = 0; i < 52; i++) {
+            deck.add(new Card(suits[i / 13], ranks[i % 13], false));
+        }
+
+        Collections.shuffle(deck);
+        return deck;
+    }
+
+    /**
+     * Returns this card's suit.
+     * 
+     * @return This card's suit
+     */
     public Suit getSuit() {
         return suit;
     }
 
+    /**
+     * Returns this card's rank.
+     * 
+     * @return This card's rank
+     */
     public Rank getRank() {
         return rank;
     }
 
+    /**
+     * Returns this card's icon (or back side, if !isFaceUp())
+     * 
+     * @return This card's icon
+     */
     public ImageIcon getIcon() {
         ImageIcon i = isFaceUp() ? icon : BACK;
         if (isGreyedOut()) {
@@ -69,10 +110,18 @@ public class Card implements Serializable {
         return i;
     }
 
+    /**
+     * Does this card face upwards?
+     * @return Is this card face up?
+     */
     public boolean isFaceUp() {
         return faceUp;
     }
 
+    /**
+     * Is this card greyed out? (For hinting).
+     * @return Is this card greyed out?
+     */
     public boolean isGreyedOut() {
         return greyedOut;
     }

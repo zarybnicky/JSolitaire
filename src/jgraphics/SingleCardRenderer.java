@@ -15,7 +15,7 @@ import jsolitaire.Card;
  * @author Jakub Zarybnický (xzaryb00)
  * @author Jiří Záleský (xzales12).
  */
-public class SimpleCardRenderer extends JLabel implements ListCellRenderer<Card> {
+public class SingleCardRenderer extends JLabel implements ListCellRenderer<Card> {
 
     private static final long serialVersionUID = 1L;
 

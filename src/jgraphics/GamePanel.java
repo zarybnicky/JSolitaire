@@ -3,6 +3,8 @@ package jgraphics;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.event.KeyEvent;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.activation.ActivationDataFlavor;
 import javax.activation.DataHandler;
 import javax.swing.GrayFilter;
@@ -16,10 +18,10 @@ import javax.swing.ListModel;
 import javax.swing.TransferHandler;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import jsolitaire.Board;
-import jsolitaire.Board.Deck;
 import jsolitaire.Card;
+import jsolitaire.Deck;
+import jsolitaire.Hints;
 import jsolitaire.Move;
-import jsolitaire.Pair;
 import jsolitaire.StackModel;
 
 /**
@@ -34,13 +36,15 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     private final int number;
     private final GameWindow parent;
-    private jsolitaire.Board board = new Board();
+    private Board board;
+    private Hints hints;
+    private Timer timer;
 
     /**
      * Constructs a new GamePanel
      *
-     * @param number
-     * @param parent
+     * @param number The index of this panel
+     * @param parent This panel's parent
      */
     public GamePanel(int number, GameWindow parent) {
         initComponents();
@@ -328,7 +332,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation1.setName("7"); // NOI18N
         foundation1.setPreferredSize(new java.awt.Dimension(73, 97));
         foundation1.setVisibleRowCount(1);
-        foundation1.setCellRenderer(new SimpleCardRenderer());
+        foundation1.setCellRenderer(new SingleCardRenderer());
         jScrollPane8.setViewportView(foundation1);
 
         jScrollPane9.setForeground(new java.awt.Color(51, 204, 0));
@@ -345,7 +349,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation2.setName("8"); // NOI18N
         foundation2.setPreferredSize(new java.awt.Dimension(73, 97));
-        foundation2.setCellRenderer(new SimpleCardRenderer());
+        foundation2.setCellRenderer(new SingleCardRenderer());
         jScrollPane9.setViewportView(foundation2);
 
         jScrollPane10.setForeground(new java.awt.Color(51, 204, 0));
@@ -362,7 +366,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation3.setName("9"); // NOI18N
         foundation3.setPreferredSize(new java.awt.Dimension(73, 97));
-        foundation3.setCellRenderer(new SimpleCardRenderer());
+        foundation3.setCellRenderer(new SingleCardRenderer());
         jScrollPane10.setViewportView(foundation3);
 
         jScrollPane11.setForeground(new java.awt.Color(51, 204, 0));
@@ -379,7 +383,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation4.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation4.setName("10"); // NOI18N
         foundation4.setPreferredSize(new java.awt.Dimension(73, 97));
-        foundation4.setCellRenderer(new SimpleCardRenderer());
+        foundation4.setCellRenderer(new SingleCardRenderer());
         jScrollPane11.setViewportView(foundation4);
 
         jScrollPane12.setForeground(new java.awt.Color(51, 204, 0));
@@ -394,7 +398,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         waste.setDropMode(javax.swing.DropMode.INSERT);
         waste.setName("11"); // NOI18N
         waste.setPreferredSize(new java.awt.Dimension(73, 97));
-        waste.setCellRenderer(new SimpleCardRenderer());
+        waste.setCellRenderer(new SingleCardRenderer());
         waste.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 wasteMouseClicked(evt);
@@ -514,20 +518,20 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the button.
      */
     private void hintButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hintButtonActionPerformed
-        Optional<Move> hint = board.getHint();
+        Optional<Move> hint = hints.getNextHint();
         hint.ifPresent(x -> {
-            StackModel<Card> fromDeck = board.getListModel(x.getFromDeck(), x.getFromSlot());
-            StackModel<Card> toDeck = board.getListModel(x.getToDeck(), x.getToSlot());
+            StackModel<Card> fromDeck = board.getDeck(x.getFrom());
+            StackModel<Card> toDeck = board.getDeck(x.getTo());
 
             new Thread(() -> {
                 try {
-                    boolean forgery = false;
-                    Card fromCard = fromDeck.getElementAt(fromDeck.getSize() - x.getFromIndex() - 1);
+                    boolean ghost = false;
+                    Card fromCard = fromDeck.getElementAt(fromDeck.getSize() - x.getNumCards() - 1);
 
                     if (toDeck.getSize() == 0) {
                         toDeck.add(new Card(null, null, true));
                         toDeck.refresh();
-                        forgery = true;
+                        ghost = true;
                     }
 
                     Card toCard = toDeck.getElementAt(toDeck.getSize() - 1);
@@ -543,7 +547,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
                     toCard.setGreyedOut(false);
                     toDeck.refresh();
 
-                    if (forgery == true) {
+                    if (ghost == true) {
                         toDeck.pop();
                     }
                 } catch (InterruptedException ex) {
@@ -566,8 +570,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the button.
      */
     private void newButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newButtonActionPerformed
-        board.resetGame();
-        startGame(board);
+        startGame(new Board());
     }//GEN-LAST:event_newButtonActionPerformed
 
     /**
@@ -603,10 +606,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the deck.
      */
     private void stockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_stockMouseClicked
-        if (board.getListModel(Deck.STOCK, 0).getSize() == 0) {
-            board.tryToMove(new Move(Pair.of(Deck.WASTE, 0), Pair.of(Deck.STOCK, 0), board.getListModel(Deck.WASTE, 0).getSize() - 1));
+        if (board.getDeck(Deck.STOCK).getSize() == 0) {
+            board.tryToMove(new Move(Deck.WASTE, Deck.STOCK, board.getDeck(Deck.WASTE).getSize() - 1));
         } else {
-            board.tryToMove(new Move(Pair.of(Deck.STOCK, 0), Pair.of(Deck.WASTE, 0), 0));
+            board.tryToMove(new Move(Deck.STOCK, Deck.WASTE, 0));
         }
     }//GEN-LAST:event_stockMouseClicked
 
@@ -616,7 +619,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the deck.
      */
     private void tableauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableauMouseClicked
-        onStackClick(Deck.TABLEAU, Integer.parseInt(evt.getComponent().getName()));
+        if (evt.getClickCount() > 1) {
+            onStackClick(Deck.ofTableau(Integer.parseInt(evt.getComponent().getName())));
+        }
     }//GEN-LAST:event_tableauMouseClicked
 
     /**
@@ -625,7 +630,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the deck.
      */
     private void wasteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wasteMouseClicked
-        onStackClick(Deck.WASTE, 0);
+        if (evt.getClickCount() > 1) {
+            onStackClick(Deck.WASTE);
+        }
     }//GEN-LAST:event_wasteMouseClicked
 
     /**
@@ -633,9 +640,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
      *
      * @param evt The event created by the deck.
      */
-    private void onStackClick(Deck deck, int slot) {
+    private void onStackClick(Deck deck) {
         for (int i = 0; i < 4; i++) {
-            if (board.tryToMove(new Move(Pair.of(deck, slot), Pair.of(Deck.FOUNDATION, i), 0))) {
+            if (board.tryToMove(new Move(deck, Deck.ofFoundation(i), 0))) {
                 break;
             }
         }
@@ -643,23 +650,34 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     /**
      * Initializes a new game and starts the timer.
-     * 
+     *
      * @param board The board being loaded
      */
     private void startGame(Board board) {
-        this.board.stopTimer();
         this.board = board;
-        board.startTimer(time -> {
-            int min = time / 60;
-            int sec = time % 60;
-            jLabel1.setText("Time: " + min + ":" + (sec < 10 ? "0" + sec : sec));
-        });
+        hints.setTarget(board);
+
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                int time = board.getTime() + 1;
+                board.setTime(time);
+                int min = time / 60;
+                int sec = time % 60;
+                jLabel1.setText("Time: " + min + ":" + (sec < 10 ? "0" + sec : sec));
+            }
+        };
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
 
         board.setOnWin(() -> {
             showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
         });
 
-        final ListModel<Card> stockModel = board.getListModel(Deck.STOCK, 0);
+        final ListModel<Card> stockModel = board.getDeck(Deck.STOCK);
         Runnable updateStock = () -> {
             if (stockModel.getSize() == 0) {
                 stockLabel.setIcon(null);
@@ -669,23 +687,21 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 stockLabel.setIcon(Card.BACK);
             }
         };
-
-        // Setup of deck behavior
         stockModel.addListDataListener(new SimpleListDataListener(updateStock));
         updateStock.run();
 
-        tableau1.setModel(board.getListModel(Deck.TABLEAU, 0));
-        tableau2.setModel(board.getListModel(Deck.TABLEAU, 1));
-        tableau3.setModel(board.getListModel(Deck.TABLEAU, 2));
-        tableau4.setModel(board.getListModel(Deck.TABLEAU, 3));
-        tableau5.setModel(board.getListModel(Deck.TABLEAU, 4));
-        tableau6.setModel(board.getListModel(Deck.TABLEAU, 5));
-        tableau7.setModel(board.getListModel(Deck.TABLEAU, 6));
-        foundation1.setModel(board.getListModel(Deck.FOUNDATION, 0));
-        foundation2.setModel(board.getListModel(Deck.FOUNDATION, 1));
-        foundation3.setModel(board.getListModel(Deck.FOUNDATION, 2));
-        foundation4.setModel(board.getListModel(Deck.FOUNDATION, 3));
-        waste.setModel(board.getListModel(Deck.WASTE, 0));
+        tableau1.setModel(board.getDeck(Deck.TABLEAU0));
+        tableau2.setModel(board.getDeck(Deck.TABLEAU1));
+        tableau3.setModel(board.getDeck(Deck.TABLEAU2));
+        tableau4.setModel(board.getDeck(Deck.TABLEAU3));
+        tableau5.setModel(board.getDeck(Deck.TABLEAU4));
+        tableau6.setModel(board.getDeck(Deck.TABLEAU5));
+        tableau7.setModel(board.getDeck(Deck.TABLEAU6));
+        foundation1.setModel(board.getDeck(Deck.FOUNDATION0));
+        foundation2.setModel(board.getDeck(Deck.FOUNDATION1));
+        foundation3.setModel(board.getDeck(Deck.FOUNDATION2));
+        foundation4.setModel(board.getDeck(Deck.FOUNDATION3));
+        waste.setModel(board.getDeck(Deck.WASTE));
 
         ListItemTransferHandler handler = new ListItemTransferHandler(board);
         tableau1.setTransferHandler(handler);
@@ -791,13 +807,13 @@ class ListItemTransferHandler extends TransferHandler {
                 source.getModel().getSize() - indices[0] - 1));
     }
 
-    private Pair<Deck, Integer> indexToDeck(int i) {
+    private Deck indexToDeck(int i) {
         if (i < 7) {
-            return Pair.of(Deck.TABLEAU, i);
+            return Deck.ofTableau(i);
         }
         if (i < 11) {
-            return Pair.of(Deck.FOUNDATION, i - 7);
+            return Deck.ofFoundation(i - 7);
         }
-        return Pair.of(Deck.WASTE, 0);
+        return Deck.WASTE;
     }
 }

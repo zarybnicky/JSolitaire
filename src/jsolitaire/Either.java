@@ -4,10 +4,13 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Represents a two-state union type, contains either <code>L</code> or <code>R</code>.
+ * Represents a two-state union type, contains either <code>L</code> or
+ * <code>R</code>.
  *
  * Left usually represents an error value, Right a normal value.
- * 
+ *
+ * @param <L> The Left type
+ * @param <R> The Right type
  * @author Jakub Zarybnický (xzaryb00)
  * @author Jiří Záleský (xzales12)
  */
@@ -18,7 +21,7 @@ public class Either<L, R> {
 
     /**
      * Constructs an Either from two Optionals
-     * 
+     *
      * @param left The left Optional
      * @param right The right Optional
      */
@@ -28,10 +31,11 @@ public class Either<L, R> {
     }
 
     /**
-     * Executes a function on the value inside, if it's left then lFunc, rFunc otherwise.
-     * 
-     * @param lFunc
-     * @param rFunc 
+     * Executes a function on the value inside, if it's left then lFunc, rFunc
+     * otherwise.
+     *
+     * @param lFunc The function to execute if this is a Left
+     * @param rFunc The function to execute if this is a Right
      */
     public void apply(Consumer<? super L> lFunc, Consumer<? super R> rFunc) {
         left.ifPresent(lFunc);
@@ -40,7 +44,7 @@ public class Either<L, R> {
 
     /**
      * Constructs a Left
-     * 
+     *
      * @param <L> The Left type
      * @param <R> The Right type
      * @param value The value to insert into Left
@@ -52,7 +56,7 @@ public class Either<L, R> {
 
     /**
      * Constructs a Right
-     * 
+     *
      * @param <L> The Left type
      * @param <R> The Right type
      * @param value The value to insert into Right

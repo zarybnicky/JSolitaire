@@ -5,16 +5,14 @@
  *
  * Description: Class represents move between decks.
  */
-
 package jsolitaire;
 
 import java.io.Serializable;
 import java.util.Observable;
-import jsolitaire.Board.Deck;
 
 /**
  * Represents a move of a stack of cards between two decks.
- * 
+ *
  * @author Jakub Zarybnický (xzaryb00)
  * @author Jiří Záleský (xzales12)
  */
@@ -22,77 +20,89 @@ public class Move extends Observable implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Pair<Deck, Integer> from;
-    private final Pair<Deck, Integer> to;
-    private final int fromIndex;
-    private boolean turnedCard = false;
+    private final Deck from;
+    private final Deck to;
+    private final int numCards;
+    private boolean turnedCard;
 
     /**
-     * Constructs a move moving <code>fromIndex</code> cards from <code>from</code> to <code>to</code>
-     * 
+     * Constructs a move moving <code>numCards</code> cards from
+     * <code>from</code> to <code>to</code>.
+     *
      * @param from 'From' deck identifier
      * @param to 'To' deck identifier
-     * @param fromIndex Number of cards to move
+     * @param numCards Number of cards to move
      */
-    public Move(Pair<Deck, Integer> from, Pair<Deck, Integer> to, int fromIndex) {
-        this.from = from;
-        this.to = to;
-        this.fromIndex = fromIndex;
+    public Move(Deck from, Deck to, int numCards) {
+        this(from, to, numCards, false);
     }
 
-    private Move(Pair<Deck, Integer> from, Pair<Deck, Integer> to, int fromIndex, boolean turnedCard) {
+    private Move(Deck from, Deck to, int numCards, boolean turnedCard) {
         this.from = from;
         this.to = to;
-        this.fromIndex = fromIndex;
+        this.numCards = numCards;
         this.turnedCard = turnedCard;
     }
-    
-    /* Getters and setters */
 
-    public Deck getFromDeck() {
-        return from.getFirst();
+    /**
+     * Returns the number of cards to be moved.
+     *
+     * @return The number of cards to be moved
+     */
+    public int getNumCards() {
+        return numCards;
     }
 
-    public int getFromSlot() {
-        return from.getSecond();
-    }
-
-    public int getFromIndex() {
-        return fromIndex;
-    }
-
-    public Deck getToDeck() {
-        return to.getFirst();
-    }
-
-    public int getToSlot() {
-        return to.getSecond();
-    }
-
-    public Pair<Deck, Integer> getFromPair() {
+    /**
+     * Returns the deck 'from' which this move is performed.
+     *
+     * @return The deck 'from' which this move is performed.
+     */
+    public Deck getFrom() {
         return from;
     }
 
-    public Pair<Deck, Integer> getToPair() {
+    /**
+     * Returns the deck 'to' which this move is performed.
+     *
+     * @return The deck 'to' which this move is performed.
+     */
+    public Deck getTo() {
         return to;
     }
 
+    /**
+     * Returns a move opposite to this one, moving the same amount of cards.
+     *
+     * @return The opposite move
+     */
     public Move getInverse() {
-        return new Move(to, from, fromIndex, turnedCard);
+        return new Move(to, from, numCards, turnedCard);
     }
 
+    /**
+     * Set whether this move resulted in a card on the tableau being turned face
+     * up?
+     *
+     * @param turnedCard a boolean
+     */
     void setTurnedCard(boolean turnedCard) {
         this.turnedCard = turnedCard;
     }
 
+    /**
+     * Did/will this move result in a card on the tableau being turned face up?
+     *
+     * @return a boolean
+     */
     public boolean didTurnCard() {
         return turnedCard;
     }
 
     @Override
     public String toString() {
-        return "Move(" + from.getFirst().name() + ", " + from.getSecond()
-                + ", " + to.getFirst().name() + ", " + to.getSecond()
-                + ", " + fromIndex + ", " + turnedCard + ")";
+        return "Move(" + from.getType().name() + ", " + from.getSlot()
+                + ", " + to.getType().name() + ", " + to.getSlot()
+                + ", " + numCards + ", " + turnedCard + ")";
     }
 }
