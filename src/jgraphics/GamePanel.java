@@ -37,7 +37,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private final int number;
     private final GameWindow parent;
     private Board board;
-    private Hints hints;
+    private Hints hints = new Hints();
     private Timer timer;
 
     /**
@@ -674,7 +674,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
 
         board.setOnWin(() -> {
-            showMessageDialog(this, "Gratulujeme k výhře!", "Výhra", JOptionPane.PLAIN_MESSAGE);
+            showMessageDialog(this, "Congratulations, you won!", "Victory", JOptionPane.PLAIN_MESSAGE);
         });
 
         final ListModel<Card> stockModel = board.getDeck(Deck.STOCK);
