@@ -34,7 +34,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private final int number;
+    private int number;
     private final GameWindow parent;
     private Board board;
     private Hints hints = new Hints();
@@ -716,6 +716,15 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3.setTransferHandler(handler);
         foundation4.setTransferHandler(handler);
         waste.setTransferHandler(handler);
+    }
+
+    /**
+     * Changes identification number.
+     *
+     * @param idNum New identification number.
+     */
+    public void changeNumber(int idNum) {
+        this.number = idNum;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

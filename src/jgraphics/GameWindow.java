@@ -14,7 +14,7 @@ public class GameWindow extends javax.swing.JFrame {
 
     private static int count = 0;
     private static final long serialVersionUID = 1L;
-    private final javax.swing.JInternalFrame[] frames = {null, null, null, null};
+    private final GamePanel[] frames = {null, null, null, null};
 
     /**
      * Constructs a new game window.
@@ -163,6 +163,16 @@ public class GameWindow extends javax.swing.JFrame {
         count--;
         if (count == 1) {
             this.setSize(645, 430);
+
+             for (int n = 0; n < 4; n++) {
+                if (frames[n] != null) {
+                    frames[0] = frames[n];
+                    frames[n] = null;
+                    frames[0].changeNumber(0);
+                    frames[0].setLocation(5, 40);
+                    break;
+                }
+            }
         }
     }
 
