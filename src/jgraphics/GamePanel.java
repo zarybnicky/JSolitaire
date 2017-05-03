@@ -611,6 +611,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         } else {
             board.tryToMove(new Move(Deck.STOCK, Deck.WASTE, 0));
         }
+        hints.reset();
     }//GEN-LAST:event_stockMouseClicked
 
     /**
@@ -643,6 +644,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
     private void onStackClick(Deck deck) {
         for (int i = 0; i < 4; i++) {
             if (board.tryToMove(new Move(deck, Deck.ofFoundation(i), 0))) {
+                hints.reset();
                 break;
             }
         }
@@ -655,6 +657,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
      */
     private void startGame(Board board) {
         this.board = board;
+        hints.reset();
         hints.setTarget(board);
 
         TimerTask timerTask = new TimerTask() {
@@ -703,7 +706,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation4.setModel(board.getDeck(Deck.FOUNDATION3));
         waste.setModel(board.getDeck(Deck.WASTE));
 
-        ListItemTransferHandler handler = new ListItemTransferHandler(board);
+        ListItemTransferHandler handler = new ListItemTransferHandler(board, this);
         tableau1.setTransferHandler(handler);
         tableau2.setTransferHandler(handler);
         tableau3.setTransferHandler(handler);
@@ -725,6 +728,15 @@ public class GamePanel extends javax.swing.JInternalFrame {
      */
     public void changeNumber(int idNum) {
         this.number = idNum;
+    }
+    
+    /**
+     * Returns Hint instance.
+     *
+     * @return Hint instance
+     */
+    public Hints getHints() {
+        return this.hints;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -779,11 +791,13 @@ class ListItemTransferHandler extends TransferHandler {
     private JList<?> source;
     private int[] indices;
     private final Board board;
+    private final GamePanel parent;
 
-    protected ListItemTransferHandler(Board board) {
+    protected ListItemTransferHandler(Board board, GamePanel parent) {
         super();
         localObjectFlavor = new ActivationDataFlavor(Object[].class, DataFlavor.javaJVMLocalObjectMimeType, "Array of items");
         this.board = board;
+        this.parent = parent;
     }
 
     @Override
@@ -810,10 +824,16 @@ class ListItemTransferHandler extends TransferHandler {
             return false;
         }
 
-        return board.tryToMove(new Move(
+        boolean movePerformed = board.tryToMove(new Move(
                 indexToDeck(Integer.parseInt(source.getName())),
                 indexToDeck(Integer.parseInt(info.getComponent().getName())),
                 source.getModel().getSize() - indices[0] - 1));
+        
+        if (movePerformed){
+            parent.getHints().reset();
+        }
+        
+        return movePerformed;
     }
 
     private Deck indexToDeck(int i) {
