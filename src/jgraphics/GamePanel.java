@@ -561,7 +561,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the button.
      */
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
-        board.goBack();
+        if (board != null) {
+            board.goBack();
+        }
     }//GEN-LAST:event_undoButtonActionPerformed
 
     /**
