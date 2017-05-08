@@ -86,9 +86,9 @@
               <Component id="hintButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="5" pref="5" max="-2" attributes="0"/>
               <Component id="undoButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="27" pref="27" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" pref="66" max="-2" attributes="0"/>
-              <EmptySpace min="33" pref="33" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" pref="93" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="closeButton" min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -130,7 +130,7 @@
               <Component id="jSeparator2" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane4" alignment="0" pref="175" max="32767" attributes="0"/>
+                  <Component id="jScrollPane4" alignment="0" pref="165" max="32767" attributes="0"/>
                   <Component id="jScrollPane3" alignment="1" max="32767" attributes="0"/>
                   <Component id="jScrollPane7" alignment="0" max="32767" attributes="0"/>
                   <Component id="jScrollPane6" alignment="1" max="32767" attributes="0"/>

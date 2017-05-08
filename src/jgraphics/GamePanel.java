@@ -332,7 +332,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation1.setName("7"); // NOI18N
         foundation1.setPreferredSize(new java.awt.Dimension(73, 97));
         foundation1.setVisibleRowCount(1);
-        foundation1.setCellRenderer(new SingleCardRenderer());
+        foundation1.setCellRenderer(new jgraphics.SingleCardRenderer());
         jScrollPane8.setViewportView(foundation1);
 
         jScrollPane9.setForeground(new java.awt.Color(51, 204, 0));
@@ -349,7 +349,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation2.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation2.setName("8"); // NOI18N
         foundation2.setPreferredSize(new java.awt.Dimension(73, 97));
-        foundation2.setCellRenderer(new SingleCardRenderer());
+        foundation2.setCellRenderer(new jgraphics.SingleCardRenderer());
         jScrollPane9.setViewportView(foundation2);
 
         jScrollPane10.setForeground(new java.awt.Color(51, 204, 0));
@@ -366,7 +366,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation3.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation3.setName("9"); // NOI18N
         foundation3.setPreferredSize(new java.awt.Dimension(73, 97));
-        foundation3.setCellRenderer(new SingleCardRenderer());
+        foundation3.setCellRenderer(new jgraphics.SingleCardRenderer());
         jScrollPane10.setViewportView(foundation3);
 
         jScrollPane11.setForeground(new java.awt.Color(51, 204, 0));
@@ -383,7 +383,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         foundation4.setMinimumSize(new java.awt.Dimension(73, 97));
         foundation4.setName("10"); // NOI18N
         foundation4.setPreferredSize(new java.awt.Dimension(73, 97));
-        foundation4.setCellRenderer(new SingleCardRenderer());
+        foundation4.setCellRenderer(new jgraphics.SingleCardRenderer());
         jScrollPane11.setViewportView(foundation4);
 
         jScrollPane12.setForeground(new java.awt.Color(51, 204, 0));
@@ -398,7 +398,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
         waste.setDropMode(javax.swing.DropMode.INSERT);
         waste.setName("11"); // NOI18N
         waste.setPreferredSize(new java.awt.Dimension(73, 97));
-        waste.setCellRenderer(new SingleCardRenderer());
+        waste.setCellRenderer(new jgraphics.SingleCardRenderer());
         waste.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 wasteMouseClicked(evt);
@@ -453,9 +453,9 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 .addComponent(hintButton)
                 .addGap(5, 5, 5)
                 .addComponent(undoButton)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(closeButton))
         );
         layout.setVerticalGroup(
@@ -489,7 +489,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane7)
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING)
