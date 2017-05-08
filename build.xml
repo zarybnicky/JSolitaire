@@ -4,15 +4,25 @@
         <copy todir="build/jsolitaire/cards">
             <fileset dir="lib/cards"></fileset>
         </copy>
+        <antcall target="jar" />
+        <antcall target="doc" />
+    </target>
+
+    <target name="jar">
         <jar destfile="dest-client/ija-client.jar" basedir="build">
             <manifest>
                 <attribute name="Main-Class" value="jsolitaire.JSolitaire"/>
             </manifest>
         </jar>
+    </target>
+
+    <target name="doc">
         <javadoc sourcepath="src" destdir="doc"/>
     </target>
 
     <target name="run">
         <java jar="dest-client/ija-client.jar" fork="true" failonerror="true"></java>
     </target>
+
+    <target name="clean"></target>
 </project>

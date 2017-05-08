@@ -34,22 +34,22 @@ public class GamePanel extends javax.swing.JInternalFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private int number;
+    private int id;
     private final GameWindow parent;
     private Board board;
-    private Hints hints = new Hints();
+    private final Hints hints = new Hints();
     private Timer timer;
 
     /**
      * Constructs a new GamePanel
      *
-     * @param number The index of this panel
+     * @param id The index of this panel
      * @param parent This panel's parent
      */
-    public GamePanel(int number, GameWindow parent) {
+    public GamePanel(int id, GameWindow parent) {
         initComponents();
 
-        this.number = number;
+        this.id = id;
         this.parent = parent;
 
         ((BasicInternalFrameUI) super.getUI()).setNorthPane(null);
@@ -508,7 +508,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param evt The event created by the button.
      */
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
-        parent.rem(number);
+        parent.rem(id);
         dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
@@ -656,6 +656,14 @@ public class GamePanel extends javax.swing.JInternalFrame {
      * @param board The board being loaded
      */
     private void startGame(Board board) {
+        if (this.board != null) {
+            Card x = new Card(Card.Suit.CLUBS, Card.Rank.ACE, true);
+            this.board.getDeck(Deck.FOUNDATION0).add(x);
+            this.board.getDeck(Deck.FOUNDATION1).add(x);
+            this.board.getDeck(Deck.FOUNDATION2).add(x);
+            this.board.getDeck(Deck.FOUNDATION3).add(x);
+        }
+
         this.board = board;
         hints.reset();
         hints.setTarget(board);
@@ -724,10 +732,10 @@ public class GamePanel extends javax.swing.JInternalFrame {
     /**
      * Changes identification number.
      *
-     * @param idNum New identification number.
+     * @param id New identification number.
      */
-    public void changeNumber(int idNum) {
-        this.number = idNum;
+    public void setNumber(int id) {
+        this.id = id;
     }
     
     /**

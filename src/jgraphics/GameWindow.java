@@ -3,6 +3,7 @@ package jgraphics;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import static javax.swing.JOptionPane.showMessageDialog;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 /**
  * Represents the game window.
@@ -168,7 +169,7 @@ public class GameWindow extends javax.swing.JFrame {
                 if (frames[n] != null) {
                     frames[0] = frames[n];
                     frames[n] = null;
-                    frames[0].changeNumber(0);
+                    frames[0].setNumber(0);
                     frames[0].setLocation(5, 40);
                     break;
                 }
