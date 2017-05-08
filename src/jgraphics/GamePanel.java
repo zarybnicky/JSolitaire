@@ -662,6 +662,7 @@ public class GamePanel extends javax.swing.JInternalFrame {
             this.board.getDeck(Deck.FOUNDATION1).add(x);
             this.board.getDeck(Deck.FOUNDATION2).add(x);
             this.board.getDeck(Deck.FOUNDATION3).add(x);
+            this.board.getDeck(Deck.WASTE).add(x);
         }
 
         this.board = board;
